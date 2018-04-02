@@ -11,21 +11,21 @@ import android.widget.ImageView;
 /**
  * Created by zhengjun on 2018/4/2.
  */
-public class FClearEditText extends FrameLayout
+public class FEditText extends FrameLayout
 {
-    public FClearEditText(Context context)
+    public FEditText(Context context)
     {
         super(context);
         init();
     }
 
-    public FClearEditText(Context context, AttributeSet attrs)
+    public FEditText(Context context, AttributeSet attrs)
     {
         super(context, attrs);
         init();
     }
 
-    public FClearEditText(Context context, AttributeSet attrs, int defStyleAttr)
+    public FEditText(Context context, AttributeSet attrs, int defStyleAttr)
     {
         super(context, attrs, defStyleAttr);
         init();
@@ -40,12 +40,6 @@ public class FClearEditText extends FrameLayout
                 ViewGroup.LayoutParams.MATCH_PARENT);
 
         addView(getEditText(), paramsEditText);
-
-        FrameLayout.LayoutParams paramsImageViewRight = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT);
-        paramsImageViewRight.gravity = Gravity.RIGHT | Gravity.CENTER_VERTICAL;
-
-        addView(getImageViewRight(), paramsImageViewRight);
     }
 
     public EditText getEditText()
@@ -62,6 +56,12 @@ public class FClearEditText extends FrameLayout
         if (mImageViewRight == null)
         {
             mImageViewRight = new ImageView(getContext());
+
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT);
+            params.gravity = Gravity.RIGHT | Gravity.CENTER_VERTICAL;
+
+            addView(mImageViewRight, params);
         }
         return mImageViewRight;
     }
