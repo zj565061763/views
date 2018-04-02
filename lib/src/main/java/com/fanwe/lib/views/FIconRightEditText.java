@@ -1,8 +1,10 @@
 package com.fanwe.lib.views;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -11,7 +13,7 @@ import android.widget.ImageView;
 /**
  * Created by zhengjun on 2018/4/2.
  */
-public class FIconRightEditText extends FrameLayout
+public abstract class FIconRightEditText extends FrameLayout
 {
     public FIconRightEditText(Context context)
     {
@@ -38,6 +40,15 @@ public class FIconRightEditText extends FrameLayout
     {
         addView(getEditText());
         addView(getImageViewRight());
+
+        getImageViewRight().setOnClickListener(new OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+
+            }
+        });
     }
 
     public EditText getEditText()
@@ -47,7 +58,22 @@ public class FIconRightEditText extends FrameLayout
             final FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT);
 
-            mEditText = new EditText(getContext());
+            mEditText = new EditText(getContext())
+            {
+                @Override
+                protected void onFocusChanged(boolean focused, int direction, Rect previouslyFocusedRect)
+                {
+                    super.onFocusChanged(focused, direction, previouslyFocusedRect);
+                    onFocusChanged_editText(focused);
+                }
+
+                @Override
+                public void setEnabled(boolean enabled)
+                {
+                    super.setEnabled(enabled);
+                    onEnableChanged_editText(enabled);
+                }
+            };
             mEditText.setLayoutParams(params);
         }
         return mEditText;
@@ -69,4 +95,8 @@ public class FIconRightEditText extends FrameLayout
         }
         return mImageViewRight;
     }
+
+    protected abstract void onFocusChanged_editText(boolean focused);
+
+    protected abstract void onEnableChanged_editText(boolean focused);
 }

@@ -1,18 +1,17 @@
 package com.fanwe.lib.views;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.EditText;
 
 /**
  * Created by zhengjun on 2018/4/2.
  */
-public class FClearEditText extends FIconRightEditText implements
-        TextWatcher,
-        View.OnClickListener,
-        View.OnFocusChangeListener
+public class FClearEditText extends EditText implements TextWatcher
 {
     public FClearEditText(Context context)
     {
@@ -32,28 +31,20 @@ public class FClearEditText extends FIconRightEditText implements
         init();
     }
 
-    private boolean mHasFocused;
+    private View mClearView;
 
     private void init()
     {
-        getEditText().addTextChangedListener(this);
-        getEditText().setOnFocusChangeListener(this);
-        getImageViewRight().setImageResource(R.drawable.lib_views_selector_edit_clear);
-        getImageViewRight().setOnClickListener(this);
-
+        addTextChangedListener(this);
         changeVisibilityIfNeed();
     }
 
-    private void changeVisibilityIfNeed()
+    public void setClearView(View clearView)
     {
-        if (mHasFocused && isEnabled() && getEditText().getText().length() > 0)
-        {
-            getImageViewRight().setVisibility(View.VISIBLE);
-        } else
-        {
-            getImageViewRight().setVisibility(View.GONE);
-        }
+        mClearView = clearView;
+        changeVisibilityIfNeed();
     }
+
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after)
@@ -74,18 +65,32 @@ public class FClearEditText extends FIconRightEditText implements
     }
 
     @Override
-    public void onClick(View v)
+    protected void onFocusChanged(boolean focused, int direction, Rect previouslyFocusedRect)
     {
-        if (v == getImageViewRight())
-        {
-            getEditText().setText("");
-        }
+        super.onFocusChanged(focused, direction, previouslyFocusedRect);
+        changeVisibilityIfNeed();
     }
 
     @Override
-    public void onFocusChange(View v, boolean hasFocus)
+    public void setEnabled(boolean enabled)
     {
-        mHasFocused = hasFocus;
+        super.setEnabled(enabled);
         changeVisibilityIfNeed();
+    }
+
+    private void changeVisibilityIfNeed()
+    {
+        if (mClearView == null)
+        {
+            return;
+        }
+
+        if (isFocused() && isEnabled() && getText().length() > 0)
+        {
+            mClearView.setVisibility(View.VISIBLE);
+        } else
+        {
+            mClearView.setVisibility(View.GONE);
+        }
     }
 }
