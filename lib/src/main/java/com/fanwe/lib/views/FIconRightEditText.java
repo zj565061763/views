@@ -57,9 +57,12 @@ public class FIconRightEditText extends FrameLayout
     {
         if (mImageViewRight == null)
         {
-            final FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT);
+            final FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
             params.gravity = Gravity.RIGHT | Gravity.CENTER_VERTICAL;
+
+            final float scale = getResources().getDisplayMetrics().density;
+            params.rightMargin = (int) (scale * 10);
 
             mImageViewRight = new ImageView(getContext());
             mImageViewRight.setLayoutParams(params);
