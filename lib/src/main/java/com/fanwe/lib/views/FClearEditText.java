@@ -31,31 +31,38 @@ public class FClearEditText extends FrameLayout
         init();
     }
 
-    public EditText mEditText;
-    public ImageView mImageViewRight;
+    private EditText mEditText;
+    private ImageView mImageViewRight;
 
     private void init()
     {
-        addEditText();
-        addImageViewRight();
-    }
-
-    private void addEditText()
-    {
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+        FrameLayout.LayoutParams paramsEditText = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
 
-        mEditText = new EditText(getContext());
-        addView(mEditText, params);
+        addView(getEditText(), paramsEditText);
+
+        FrameLayout.LayoutParams paramsImageViewRight = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        paramsImageViewRight.gravity = Gravity.RIGHT | Gravity.CENTER_VERTICAL;
+
+        addView(getImageViewRight(), paramsImageViewRight);
     }
 
-    private void addImageViewRight()
+    public EditText getEditText()
     {
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT);
-        params.gravity = Gravity.RIGHT | Gravity.CENTER_VERTICAL;
+        if (mEditText == null)
+        {
+            mEditText = new EditText(getContext());
+        }
+        return mEditText;
+    }
 
-        mImageViewRight = new ImageView(getContext());
-        addView(mImageViewRight, params);
+    public ImageView getImageViewRight()
+    {
+        if (mImageViewRight == null)
+        {
+            mImageViewRight = new ImageView(getContext());
+        }
+        return mImageViewRight;
     }
 }
