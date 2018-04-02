@@ -45,7 +45,6 @@ public class FClearEditText extends EditText implements TextWatcher
         changeVisibilityIfNeed();
     }
 
-
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after)
     {
