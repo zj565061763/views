@@ -107,15 +107,12 @@ public class FTagInputLayout extends FrameLayout
 
     private void orderViewsIfNeed()
     {
-        if (mEditText != null)
-        {
-            bringChildToFront(mTagView);
+        bringChildToFront(mTagView);
 
-            if (mEditText instanceof FTagEditText)
-            {
-                FTagEditText tagEditText = (FTagEditText) mEditText;
-                tagEditText.setTagView(mTagView);
-            }
+        if (mEditText != null && mEditText instanceof FTagEditText)
+        {
+            FTagEditText tagEditText = (FTagEditText) mEditText;
+            tagEditText.setTagView(mTagView);
         }
     }
 
