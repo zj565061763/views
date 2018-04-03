@@ -2,6 +2,9 @@ package com.fanwe.lib.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.Gravity;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 /**
@@ -31,8 +34,15 @@ public class FClearInputLayout extends FTagInputLayout
     {
         setEditText(new FClearEditText(getContext()));
 
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.gravity = Gravity.RIGHT | Gravity.CENTER_VERTICAL;
+        params.rightMargin = (int) (getResources().getDisplayMetrics().density * 10);
+
         ImageView imageView = new ImageView(getContext());
+        imageView.setLayoutParams(params);
         imageView.setImageResource(R.drawable.lib_views_selector_edit_clear);
+
         setTagView(imageView);
     }
 }

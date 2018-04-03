@@ -2,7 +2,6 @@ package com.fanwe.lib.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -57,13 +56,6 @@ public class FTagInputLayout extends FrameLayout
 
             if (editText != null)
             {
-                if (editText.getLayoutParams() == null)
-                {
-                    FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.MATCH_PARENT);
-
-                    editText.setLayoutParams(params);
-                }
                 removeViewFromParent(editText);
                 addView(editText);
                 orderViewsIfNeed();
@@ -84,15 +76,6 @@ public class FTagInputLayout extends FrameLayout
 
             if (tagView != null)
             {
-                if (tagView.getLayoutParams() == null)
-                {
-                    FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                            ViewGroup.LayoutParams.WRAP_CONTENT);
-                    params.gravity = Gravity.RIGHT | Gravity.CENTER_VERTICAL;
-                    params.rightMargin = (int) (getResources().getDisplayMetrics().density * 10);
-
-                    tagView.setLayoutParams(params);
-                }
                 removeViewFromParent(tagView);
                 addView(tagView);
                 orderViewsIfNeed();
@@ -113,6 +96,28 @@ public class FTagInputLayout extends FrameLayout
         {
             FTagEditText tagEditText = (FTagEditText) mEditText;
             tagEditText.setTagView(mTagView);
+        }
+    }
+
+    @Override
+    protected void onFinishInflate()
+    {
+        super.onFinishInflate();
+
+        final int count = getChildCount();
+        if (count > 0)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                final View child = getChildAt(i);
+                if (child instanceof EditText)
+                {
+                    setEditText((EditText) child);
+                } else
+                {
+                    setTagView(child);
+                }
+            }
         }
     }
 

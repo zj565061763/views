@@ -7,6 +7,8 @@
     <com.fanwe.lib.views.FClearInputLayout
         android:id="@+id/view_clear"
         android:layout_width="match_parent"
-        android:layout_height="50dp" />
+        android:layout_height="50dp">
+
+    </com.fanwe.lib.views.FClearInputLayout>
 
 </LinearLayout>
