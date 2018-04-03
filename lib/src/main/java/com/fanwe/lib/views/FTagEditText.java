@@ -8,10 +8,13 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by zhengjun on 2018/4/2.
  */
-public abstract class FTagEditText extends EditText implements TextWatcher
+public class FTagEditText extends EditText implements TextWatcher
 {
     public FTagEditText(Context context)
     {
@@ -31,23 +34,26 @@ public abstract class FTagEditText extends EditText implements TextWatcher
         init();
     }
 
-    private View mTagView;
+    private final List<TagView> mTagViewHolder = new ArrayList<>();
 
     private void init()
     {
         addTextChangedListener(this);
-        changeVisibilityIfNeed();
     }
 
-    public void setTagView(View tagView)
+    public void addTagView(TagView tagView)
     {
-        mTagView = tagView;
-        changeVisibilityIfNeed();
+        if (tagView == null || mTagViewHolder.contains(tagView))
+        {
+            return;
+        }
+        mTagViewHolder.add(tagView);
+        tagView.updateTagViewState(this);
     }
 
-    public View getTagView()
+    public void removeTagView(TagView tagView)
     {
-        return mTagView;
+        mTagViewHolder.remove(tagView);
     }
 
     @Override
@@ -59,7 +65,7 @@ public abstract class FTagEditText extends EditText implements TextWatcher
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count)
     {
-        changeVisibilityIfNeed();
+        updateTagViewStateIfNeed();
     }
 
     @Override
@@ -72,14 +78,14 @@ public abstract class FTagEditText extends EditText implements TextWatcher
     protected void onFocusChanged(boolean focused, int direction, Rect previouslyFocusedRect)
     {
         super.onFocusChanged(focused, direction, previouslyFocusedRect);
-        changeVisibilityIfNeed();
+        updateTagViewStateIfNeed();
     }
 
     @Override
     public void setEnabled(boolean enabled)
     {
         super.setEnabled(enabled);
-        changeVisibilityIfNeed();
+        updateTagViewStateIfNeed();
     }
 
     @Override
@@ -88,33 +94,25 @@ public abstract class FTagEditText extends EditText implements TextWatcher
         super.onVisibilityChanged(changedView, visibility);
         if (changedView == this)
         {
-            changeVisibilityIfNeed();
+            updateTagViewStateIfNeed();
         }
     }
 
-    protected final void changeVisibilityIfNeed()
+    protected final void updateTagViewStateIfNeed()
     {
-        if (mTagView == null)
+        if (mTagViewHolder == null || mTagViewHolder.isEmpty())
         {
             return;
         }
 
-        if (getVisibility() == View.VISIBLE
-                && isFocused()
-                && isEnabled()
-                && showTagView())
+        for (TagView item : mTagViewHolder)
         {
-            mTagView.setVisibility(View.VISIBLE);
-        } else
-        {
-            mTagView.setVisibility(View.GONE);
+            item.updateTagViewState(this);
         }
     }
 
-    /**
-     * true-显示tagview，false-隐藏tagview
-     *
-     * @return
-     */
-    protected abstract boolean showTagView();
+    public interface TagView
+    {
+        void updateTagViewState(EditText editText);
+    }
 }

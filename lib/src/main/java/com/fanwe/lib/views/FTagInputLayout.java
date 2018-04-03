@@ -3,9 +3,6 @@ package com.fanwe.lib.views;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 
 /**
@@ -31,108 +28,47 @@ public class FTagInputLayout extends FrameLayout
         init();
     }
 
-    private EditText mEditText;
-    private View mTagView;
+    private FTagEditText mEditText;
 
     private void init()
     {
+        mEditText = new FTagEditText(getContext());
+        addView(mEditText);
     }
 
-    public EditText getEditText()
+    public FTagEditText getEditText()
     {
         return mEditText;
     }
 
-    public void setEditText(EditText editText)
+    @Override
+    public void onViewAdded(View child)
     {
-        if (mEditText != editText)
+        super.onViewAdded(child);
+
+        if (child != getEditText())
         {
-            if (mEditText != null)
+            if (child instanceof FTagEditText.TagView)
             {
-                removeView(mEditText);
+                getEditText().addTagView((FTagEditText.TagView) child);
             }
-
-            mEditText = editText;
-
-            if (editText != null)
-            {
-                removeViewFromParent(editText);
-                addView(editText);
-                orderViewsIfNeed();
-            }
-        }
-    }
-
-    public void setTagView(View tagView)
-    {
-        if (mTagView != tagView)
-        {
-            if (mTagView != null)
-            {
-                removeView(mTagView);
-            }
-
-            mTagView = tagView;
-
-            if (tagView != null)
-            {
-                removeViewFromParent(tagView);
-                addView(tagView);
-                orderViewsIfNeed();
-            }
-        }
-    }
-
-    public View getTagView()
-    {
-        return mTagView;
-    }
-
-    private void orderViewsIfNeed()
-    {
-        bringChildToFront(mTagView);
-
-        if (mEditText != null && mEditText instanceof FTagEditText)
-        {
-            FTagEditText tagEditText = (FTagEditText) mEditText;
-            tagEditText.setTagView(mTagView);
         }
     }
 
     @Override
-    protected void onFinishInflate()
+    public void onViewRemoved(View child)
     {
-        super.onFinishInflate();
+        super.onViewRemoved(child);
 
-        final int count = getChildCount();
-        if (count > 0)
+        if (child == getEditText())
         {
-            for (int i = 0; i < count; i++)
+            throw new IllegalArgumentException("FTagEditText can not be remove from FTagInputLayout");
+        } else
+        {
+            if (child instanceof FTagEditText.TagView)
             {
-                final View child = getChildAt(i);
-                if (child instanceof EditText)
-                {
-                    setEditText((EditText) child);
-                } else
-                {
-                    setTagView(child);
-                }
+                getEditText().removeTagView((FTagEditText.TagView) child);
             }
-        }
-    }
-
-    private static void removeViewFromParent(View view)
-    {
-        if (view == null)
-        {
-            return;
-        }
-
-        final ViewParent parent = view.getParent();
-        if (parent != null && parent instanceof ViewGroup)
-        {
-            final ViewGroup viewGroup = (ViewGroup) parent;
-            viewGroup.removeView(view);
         }
     }
 }
