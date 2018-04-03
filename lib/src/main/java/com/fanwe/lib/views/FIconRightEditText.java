@@ -40,15 +40,6 @@ public abstract class FIconRightEditText extends FrameLayout
     {
         addView(getEditText());
         addView(getImageViewRight());
-
-        getImageViewRight().setOnClickListener(new OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-
-            }
-        });
     }
 
     public EditText getEditText()
@@ -58,22 +49,7 @@ public abstract class FIconRightEditText extends FrameLayout
             final FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT);
 
-            mEditText = new EditText(getContext())
-            {
-                @Override
-                protected void onFocusChanged(boolean focused, int direction, Rect previouslyFocusedRect)
-                {
-                    super.onFocusChanged(focused, direction, previouslyFocusedRect);
-                    onFocusChanged_editText(focused);
-                }
-
-                @Override
-                public void setEnabled(boolean enabled)
-                {
-                    super.setEnabled(enabled);
-                    onEnableChanged_editText(enabled);
-                }
-            };
+            mEditText = new EditText(getContext());
             mEditText.setLayoutParams(params);
         }
         return mEditText;
@@ -95,8 +71,4 @@ public abstract class FIconRightEditText extends FrameLayout
         }
         return mImageViewRight;
     }
-
-    protected abstract void onFocusChanged_editText(boolean focused);
-
-    protected abstract void onEnableChanged_editText(boolean focused);
 }
