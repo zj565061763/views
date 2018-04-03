@@ -92,7 +92,7 @@ public abstract class FTagEditText extends EditText implements TextWatcher
         }
     }
 
-    private void changeVisibilityIfNeed()
+    protected final void changeVisibilityIfNeed()
     {
         if (mTagView == null)
         {
