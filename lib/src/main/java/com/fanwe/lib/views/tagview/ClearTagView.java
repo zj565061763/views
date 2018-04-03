@@ -11,21 +11,21 @@ import com.fanwe.lib.views.FTagEditText;
 /**
  * Created by zhengjun on 2018/4/3.
  */
-public class SimpleClearTagView extends ImageView implements FTagEditText.TagView
+public class ClearTagView extends ImageView implements FTagEditText.TagView
 {
-    public SimpleClearTagView(Context context)
+    public ClearTagView(Context context)
     {
         super(context);
         init();
     }
 
-    public SimpleClearTagView(Context context, AttributeSet attrs)
+    public ClearTagView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
         init();
     }
 
-    public SimpleClearTagView(Context context, AttributeSet attrs, int defStyleAttr)
+    public ClearTagView(Context context, AttributeSet attrs, int defStyleAttr)
     {
         super(context, attrs, defStyleAttr);
         init();
