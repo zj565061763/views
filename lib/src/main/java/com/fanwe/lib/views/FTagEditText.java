@@ -11,27 +11,27 @@ import android.widget.EditText;
 /**
  * Created by zhengjun on 2018/4/2.
  */
-public class FClearEditText extends EditText implements TextWatcher
+public abstract class FTagEditText extends EditText implements TextWatcher
 {
-    public FClearEditText(Context context)
+    public FTagEditText(Context context)
     {
         super(context);
         init();
     }
 
-    public FClearEditText(Context context, AttributeSet attrs)
+    public FTagEditText(Context context, AttributeSet attrs)
     {
         super(context, attrs);
         init();
     }
 
-    public FClearEditText(Context context, AttributeSet attrs, int defStyleAttr)
+    public FTagEditText(Context context, AttributeSet attrs, int defStyleAttr)
     {
         super(context, attrs, defStyleAttr);
         init();
     }
 
-    private View mClearView;
+    private View mTagView;
 
     private void init()
     {
@@ -39,10 +39,15 @@ public class FClearEditText extends EditText implements TextWatcher
         changeVisibilityIfNeed();
     }
 
-    public void setClearView(View clearView)
+    public void setTagView(View tagView)
     {
-        mClearView = clearView;
+        mTagView = tagView;
         changeVisibilityIfNeed();
+    }
+
+    public View getTagView()
+    {
+        return mTagView;
     }
 
     @Override
@@ -77,19 +82,39 @@ public class FClearEditText extends EditText implements TextWatcher
         changeVisibilityIfNeed();
     }
 
+    @Override
+    protected void onVisibilityChanged(View changedView, int visibility)
+    {
+        super.onVisibilityChanged(changedView, visibility);
+        if (changedView == this)
+        {
+            changeVisibilityIfNeed();
+        }
+    }
+
     private void changeVisibilityIfNeed()
     {
-        if (mClearView == null)
+        if (mTagView == null)
         {
             return;
         }
 
-        if (isFocused() && isEnabled() && getText().length() > 0)
+        if (getVisibility() == View.VISIBLE
+                && isFocused()
+                && isEnabled()
+                && showTagView())
         {
-            mClearView.setVisibility(View.VISIBLE);
+            mTagView.setVisibility(View.VISIBLE);
         } else
         {
-            mClearView.setVisibility(View.GONE);
+            mTagView.setVisibility(View.GONE);
         }
     }
+
+    /**
+     * true-显示tagview，false-隐藏tagview
+     *
+     * @return
+     */
+    protected abstract boolean showTagView();
 }
