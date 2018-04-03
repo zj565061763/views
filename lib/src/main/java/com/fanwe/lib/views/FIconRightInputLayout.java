@@ -73,6 +73,15 @@ public class FIconRightInputLayout extends FrameLayout
         removeView(getImageViewRight());
         addView(editText);
         addView(getImageViewRight());
+
+        if (editText instanceof FTagEditText)
+        {
+            FTagEditText tagEditText = (FTagEditText) editText;
+            if (tagEditText.getTagView() == null)
+            {
+                tagEditText.setTagView(getImageViewRight());
+            }
+        }
     }
 
     public ImageView getImageViewRight()
