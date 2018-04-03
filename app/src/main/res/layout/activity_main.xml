@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.fanwe.lib.views.FClearEditText
+    <com.fanwe.lib.views.FClearInputLayout
+        android:id="@+id/view_clear"
         android:layout_width="match_parent"
         android:layout_height="50dp" />
 
