@@ -30,11 +30,12 @@ public class FPasswordEditText extends FDrawableEditText implements FTagEditText
         init();
     }
 
+    private static final int TYPE_TEXT_PASSWORD = 129;
+
     /**
      * 是否显示密码
      */
     private boolean mIsPasswordVisible = false;
-    private int mInputTypeOriginal;
 
     private Drawable mDrawablePasswordVisible;
     private Drawable mDrawablePasswordInvisible;
@@ -48,6 +49,8 @@ public class FPasswordEditText extends FDrawableEditText implements FTagEditText
 
         final float scale = getResources().getDisplayMetrics().density;
         getDrawableConfigRight().setWidth((int) (16 * scale));
+
+        updateInputType();
     }
 
     public void setDrawablePasswordVisible(Drawable drawable)
@@ -60,13 +63,6 @@ public class FPasswordEditText extends FDrawableEditText implements FTagEditText
     {
         mDrawablePasswordInvisible = drawable;
         updateTagViewState(this);
-    }
-
-    @Override
-    public void setInputType(int type)
-    {
-        super.setInputType(type);
-        mInputTypeOriginal = type;
     }
 
     @Override
@@ -96,16 +92,21 @@ public class FPasswordEditText extends FDrawableEditText implements FTagEditText
     {
         super.onClickDrawableRight();
 
+        mIsPasswordVisible = !mIsPasswordVisible;
+
+        updateTagViewState(this);
+        updateInputType();
+        setSelection(getText().toString().length());
+    }
+
+    private void updateInputType()
+    {
         if (mIsPasswordVisible)
         {
-            mIsPasswordVisible = false;
-            super.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            setInputType(InputType.TYPE_CLASS_TEXT);
         } else
         {
-            mIsPasswordVisible = true;
-            super.setInputType(mInputTypeOriginal);
+            setInputType(TYPE_TEXT_PASSWORD);
         }
-        setSelection(getText().toString().length());
-        updateTagViewState(this);
     }
 }
