@@ -50,7 +50,7 @@ public class DrawableConfig
     {
         int drawableWidth = drawable.getIntrinsicWidth();
         int drawableHeight = drawable.getIntrinsicHeight();
-        if (width > 0)
+        if (width > 0 && width != drawableWidth)
         {
             drawableHeight = getScaledHeight(width, drawable);
             drawableWidth = width;
