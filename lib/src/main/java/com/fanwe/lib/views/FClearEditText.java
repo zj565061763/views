@@ -36,7 +36,6 @@ public class FClearEditText extends FDrawableEditText implements FTagEditText.Ta
 
         final float scale = getResources().getDisplayMetrics().density;
         getDrawableRightConfig().setWidth((int) (16 * scale));
-        getDrawableRightConfig().setMarginRight((int) (5 * scale));
     }
 
     @Override

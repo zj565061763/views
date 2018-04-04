@@ -7,9 +7,6 @@ import android.graphics.drawable.Drawable;
  */
 public class DrawableConfig
 {
-    private int marginLeft;
-    private int marginRight;
-
     private int width;
 
     public void setBoundsDrawableLeft(Drawable drawable)
@@ -21,7 +18,7 @@ public class DrawableConfig
 
         final int[] size = scaleDrawableIfNeed(drawable);
 
-        int left = 0 + marginLeft;
+        int left = 0;
         int top = 0;
         int right = left + size[0];
         int bottom = top + size[1];
@@ -38,7 +35,7 @@ public class DrawableConfig
 
         final int[] size = scaleDrawableIfNeed(drawable);
 
-        int left = 0 - marginRight;
+        int left = 0;
         int top = 0;
         int right = left + size[0];
         int bottom = top + size[1];
@@ -61,26 +58,6 @@ public class DrawableConfig
     private static int getScaledHeight(int width, Drawable drawable)
     {
         return (int) (width * drawable.getIntrinsicHeight() / (float) drawable.getIntrinsicWidth());
-    }
-
-    public int getMarginLeft()
-    {
-        return marginLeft;
-    }
-
-    public void setMarginLeft(int marginLeft)
-    {
-        this.marginLeft = marginLeft;
-    }
-
-    public int getMarginRight()
-    {
-        return marginRight;
-    }
-
-    public void setMarginRight(int marginRight)
-    {
-        this.marginRight = marginRight;
     }
 
     public int getWidth()
