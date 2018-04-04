@@ -6,6 +6,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
 
+import com.fanwe.lib.views.utils.DrawableConfig;
+
 /**
  * Created by zhengjun on 2018/4/4.
  */
@@ -31,9 +33,7 @@ public class FClearEditText extends FTagEditText implements FTagEditText.TagView
     }
 
     private Drawable mClearDrawable;
-
-    private int mClearDrawableWidth;
-    private int mClearDrawableMarginRight;
+    private DrawableConfig mClearDrawableConfig;
 
     private void init()
     {
@@ -45,46 +45,47 @@ public class FClearEditText extends FTagEditText implements FTagEditText.TagView
         setClearDrawableMarginRight((int) (scale * 5));
     }
 
+    private DrawableConfig getClearDrawableConfig()
+    {
+        if (mClearDrawableConfig == null)
+        {
+            mClearDrawableConfig = new DrawableConfig();
+        }
+        return mClearDrawableConfig;
+    }
+
+    /**
+     * 设置清除图片
+     *
+     * @param clearDrawable
+     */
     public void setClearDrawable(Drawable clearDrawable)
     {
         mClearDrawable = clearDrawable;
-        updateDrawableLayoutIfNeed();
+        getClearDrawableConfig().setBoundsDrawableRight(clearDrawable);
         updateTagViewState(this);
     }
 
+    /**
+     * 设置清除图片宽度
+     *
+     * @param clearDrawableWidth
+     */
     public void setClearDrawableWidth(int clearDrawableWidth)
     {
-        mClearDrawableWidth = clearDrawableWidth;
-        updateDrawableLayoutIfNeed();
+        getClearDrawableConfig().setWidth(clearDrawableWidth);
+        getClearDrawableConfig().setBoundsDrawableRight(mClearDrawable);
     }
 
+    /**
+     * 设置清除图片右边间距
+     *
+     * @param clearDrawableMarginRight
+     */
     public void setClearDrawableMarginRight(int clearDrawableMarginRight)
     {
-        mClearDrawableMarginRight = clearDrawableMarginRight;
-        updateDrawableLayoutIfNeed();
-    }
-
-    private void updateDrawableLayoutIfNeed()
-    {
-        if (mClearDrawable == null)
-        {
-            return;
-        }
-
-        int width = mClearDrawable.getIntrinsicWidth();
-        int height = mClearDrawable.getIntrinsicHeight();
-        if (mClearDrawableWidth > 0)
-        {
-            height = (int) (mClearDrawableWidth * height / (float) width);
-            width = mClearDrawableWidth;
-        }
-
-        int left = 0 - mClearDrawableMarginRight;
-        int top = 0;
-        int right = left + width;
-        int bottom = top + height;
-
-        mClearDrawable.setBounds(left, top, right, bottom);
+        getClearDrawableConfig().setMarginRight(clearDrawableMarginRight);
+        getClearDrawableConfig().setBoundsDrawableRight(mClearDrawable);
     }
 
     @Override

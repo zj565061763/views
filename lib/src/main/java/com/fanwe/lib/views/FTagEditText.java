@@ -34,35 +34,26 @@ public class FTagEditText extends EditText implements TextWatcher
         init();
     }
 
-    private List<TagView> mTagViewHolder;
+    private final List<TagView> mTagViewHolder = new ArrayList<>();
 
     private void init()
     {
         addTextChangedListener(this);
     }
 
-    private List<TagView> getTagViewHolder()
+    public final void addTagView(TagView tagView)
     {
-        if (mTagViewHolder == null)
-        {
-            mTagViewHolder = new ArrayList<>();
-        }
-        return mTagViewHolder;
-    }
-
-    public void addTagView(TagView tagView)
-    {
-        if (tagView == null || getTagViewHolder().contains(tagView))
+        if (tagView == null || mTagViewHolder.contains(tagView))
         {
             return;
         }
-        getTagViewHolder().add(tagView);
+        mTagViewHolder.add(tagView);
         tagView.updateTagViewState(this);
     }
 
-    public void removeTagView(TagView tagView)
+    public final void removeTagView(TagView tagView)
     {
-        getTagViewHolder().remove(tagView);
+        mTagViewHolder.remove(tagView);
     }
 
     @Override
@@ -109,12 +100,12 @@ public class FTagEditText extends EditText implements TextWatcher
 
     private void updateTagViewStateIfNeed()
     {
-        if (getTagViewHolder().isEmpty())
+        if (mTagViewHolder == null || mTagViewHolder.isEmpty())
         {
             return;
         }
 
-        for (TagView item : getTagViewHolder())
+        for (TagView item : mTagViewHolder)
         {
             item.updateTagViewState(this);
         }

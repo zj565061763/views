@@ -4,21 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.fanwe.lib.views.FTagInputLayout
-        android:id="@+id/view_input"
-        android:layout_width="match_parent"
-        android:layout_height="50dp">
-
-        <com.fanwe.lib.views.tagview.ClearTagView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_gravity="center_vertical|right"
-            android:layout_marginRight="10dp"
-            android:src="@drawable/lib_views_selector_edit_clear" />
-
-    </com.fanwe.lib.views.FTagInputLayout>
-
-
     <com.fanwe.lib.views.FClearEditText
         android:layout_width="match_parent"
         android:layout_height="50dp"
