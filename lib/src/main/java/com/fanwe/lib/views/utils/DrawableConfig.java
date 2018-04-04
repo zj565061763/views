@@ -9,24 +9,7 @@ public class DrawableConfig
 {
     private int width;
 
-    public void setBoundsDrawableLeft(Drawable drawable)
-    {
-        if (drawable == null)
-        {
-            return;
-        }
-
-        final int[] size = scaleDrawableIfNeed(drawable);
-
-        int left = 0;
-        int top = 0;
-        int right = left + size[0];
-        int bottom = top + size[1];
-
-        drawable.setBounds(left, top, right, bottom);
-    }
-
-    public void setBoundsDrawableRight(Drawable drawable)
+    public void setBounds(Drawable drawable)
     {
         if (drawable == null)
         {

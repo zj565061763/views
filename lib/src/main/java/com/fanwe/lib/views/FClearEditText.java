@@ -29,6 +29,8 @@ public class FClearEditText extends FDrawableEditText implements FTagEditText.Ta
         init();
     }
 
+    private Drawable mDrawableClear;
+
     private void init()
     {
         addTagView(this);
@@ -36,6 +38,16 @@ public class FClearEditText extends FDrawableEditText implements FTagEditText.Ta
 
         final float scale = getResources().getDisplayMetrics().density;
         getDrawableRightConfig().setWidth((int) (16 * scale));
+    }
+
+    /**
+     * 设置清空内容的图片
+     *
+     * @param drawable
+     */
+    public void setDrawableClear(Drawable drawable)
+    {
+        mDrawableClear = drawable;
     }
 
     @Override
@@ -48,10 +60,10 @@ public class FClearEditText extends FDrawableEditText implements FTagEditText.Ta
                 && isEnabled()
                 && getText().length() > 0)
         {
-            drawable = getDrawableRight();
+            drawable = mDrawableClear;
         }
 
-        setCompoundDrawables(getCompoundDrawables()[0], getCompoundDrawables()[1], drawable, getCompoundDrawables()[3]);
+        setDrawableRight(drawable);
     }
 
     @Override

@@ -43,29 +43,29 @@ public class FDrawableEditText extends FTagEditText
 
     }
 
-    public void setDrawableLeft(Drawable drawableLeft)
+    public final void setDrawableLeft(Drawable drawableLeft)
     {
         mDrawableLeft = drawableLeft;
         setCompoundDrawables(drawableLeft, getCompoundDrawables()[1], getCompoundDrawables()[2], getCompoundDrawables()[3]);
     }
 
-    public void setDrawableRight(Drawable drawableRight)
+    public final void setDrawableRight(Drawable drawableRight)
     {
         mDrawableRight = drawableRight;
         setCompoundDrawables(getCompoundDrawables()[0], getCompoundDrawables()[1], drawableRight, getCompoundDrawables()[3]);
     }
 
-    public Drawable getDrawableLeft()
+    public final Drawable getDrawableLeft()
     {
         return mDrawableLeft;
     }
 
-    public Drawable getDrawableRight()
+    public final Drawable getDrawableRight()
     {
         return mDrawableRight;
     }
 
-    public DrawableConfig getDrawableLeftConfig()
+    public final DrawableConfig getDrawableLeftConfig()
     {
         if (mDrawableLeftConfig == null)
         {
@@ -74,7 +74,7 @@ public class FDrawableEditText extends FTagEditText
         return mDrawableLeftConfig;
     }
 
-    public DrawableConfig getDrawableRightConfig()
+    public final DrawableConfig getDrawableRightConfig()
     {
         if (mDrawableRightConfig == null)
         {
@@ -86,8 +86,8 @@ public class FDrawableEditText extends FTagEditText
     @Override
     protected void onDraw(Canvas canvas)
     {
-        getDrawableLeftConfig().setBoundsDrawableLeft(mDrawableLeft);
-        getDrawableRightConfig().setBoundsDrawableRight(mDrawableRight);
+        getDrawableLeftConfig().setBounds(mDrawableLeft);
+        getDrawableRightConfig().setBounds(mDrawableRight);
         super.onDraw(canvas);
     }
 
