@@ -32,20 +32,59 @@ public class FClearEditText extends FTagEditText implements FTagEditText.TagView
 
     private Drawable mClearDrawable;
 
+    private int mClearDrawableWidth;
+    private int mClearDrawableMarginRight;
+
     private void init()
     {
         addTagView(this);
         setClearDrawable(getResources().getDrawable(R.drawable.lib_views_selector_edit_clear));
+
+        final float scale = getResources().getDisplayMetrics().density;
+        setClearDrawableWidth((int) (scale * 16));
+        setClearDrawableMarginRight((int) (scale * 5));
     }
 
     public void setClearDrawable(Drawable clearDrawable)
     {
         mClearDrawable = clearDrawable;
-        if (mClearDrawable != null)
-        {
-            mClearDrawable.setBounds(0, 0, mClearDrawable.getIntrinsicWidth(), mClearDrawable.getIntrinsicHeight());
-        }
+        updateDrawableLayoutIfNeed();
         updateTagViewState(this);
+    }
+
+    public void setClearDrawableWidth(int clearDrawableWidth)
+    {
+        mClearDrawableWidth = clearDrawableWidth;
+        updateDrawableLayoutIfNeed();
+    }
+
+    public void setClearDrawableMarginRight(int clearDrawableMarginRight)
+    {
+        mClearDrawableMarginRight = clearDrawableMarginRight;
+        updateDrawableLayoutIfNeed();
+    }
+
+    private void updateDrawableLayoutIfNeed()
+    {
+        if (mClearDrawable == null)
+        {
+            return;
+        }
+
+        int width = mClearDrawable.getIntrinsicWidth();
+        int height = mClearDrawable.getIntrinsicHeight();
+        if (mClearDrawableWidth > 0)
+        {
+            height = (int) (mClearDrawableWidth * height / (float) width);
+            width = mClearDrawableWidth;
+        }
+
+        int left = 0 - mClearDrawableMarginRight;
+        int top = 0;
+        int right = left + width;
+        int bottom = top + height;
+
+        mClearDrawable.setBounds(left, top, right, bottom);
     }
 
     @Override
