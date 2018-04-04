@@ -34,20 +34,17 @@ public class FClearEditText extends FDrawableEditText implements FTagEditText.Ta
     private void init()
     {
         addTagView(this);
-        setDrawableRight(getResources().getDrawable(R.drawable.lib_views_selector_edit_clear));
+
+        setDrawableClear(getResources().getDrawable(R.drawable.lib_views_selector_edit_clear));
 
         final float scale = getResources().getDisplayMetrics().density;
-        getDrawableRightConfig().setWidth((int) (16 * scale));
+        getDrawableConfigRight().setWidth((int) (16 * scale));
     }
 
-    /**
-     * 设置清空内容的图片
-     *
-     * @param drawable
-     */
-    public void setDrawableClear(Drawable drawable)
+    public void setDrawableClear(Drawable drawableClear)
     {
-        mDrawableClear = drawable;
+        mDrawableClear = drawableClear;
+
     }
 
     @Override

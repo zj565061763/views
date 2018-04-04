@@ -47,7 +47,7 @@ public class FPasswordEditText extends FDrawableEditText implements FTagEditText
         setDrawablePasswordInvisible(getResources().getDrawable(R.drawable.ic_eye_show_content_off));
 
         final float scale = getResources().getDisplayMetrics().density;
-        getDrawableRightConfig().setWidth((int) (16 * scale));
+        getDrawableConfigRight().setWidth((int) (16 * scale));
     }
 
     public void setDrawablePasswordVisible(Drawable drawable)

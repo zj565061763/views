@@ -32,11 +32,8 @@ public class FDrawableEditText extends FTagEditText
         init();
     }
 
-    private Drawable mDrawableLeft;
-    private Drawable mDrawableRight;
-
-    private DrawableConfig mDrawableLeftConfig;
-    private DrawableConfig mDrawableRightConfig;
+    private DrawableConfig mDrawableConfigLeft;
+    private DrawableConfig mDrawableConfigRight;
 
     private void init()
     {
@@ -45,49 +42,49 @@ public class FDrawableEditText extends FTagEditText
 
     public final void setDrawableLeft(Drawable drawableLeft)
     {
-        mDrawableLeft = drawableLeft;
+        getDrawableConfigLeft().setBounds(drawableLeft);
         setCompoundDrawables(drawableLeft, getCompoundDrawables()[1], getCompoundDrawables()[2], getCompoundDrawables()[3]);
     }
 
     public final void setDrawableRight(Drawable drawableRight)
     {
-        mDrawableRight = drawableRight;
+        getDrawableConfigRight().setBounds(drawableRight);
         setCompoundDrawables(getCompoundDrawables()[0], getCompoundDrawables()[1], drawableRight, getCompoundDrawables()[3]);
     }
 
     public final Drawable getDrawableLeft()
     {
-        return mDrawableLeft;
+        return getCompoundDrawables()[0];
     }
 
     public final Drawable getDrawableRight()
     {
-        return mDrawableRight;
+        return getCompoundDrawables()[2];
     }
 
-    public final DrawableConfig getDrawableLeftConfig()
+    public final DrawableConfig getDrawableConfigLeft()
     {
-        if (mDrawableLeftConfig == null)
+        if (mDrawableConfigLeft == null)
         {
-            mDrawableLeftConfig = new DrawableConfig();
+            mDrawableConfigLeft = new DrawableConfig();
         }
-        return mDrawableLeftConfig;
+        return mDrawableConfigLeft;
     }
 
-    public final DrawableConfig getDrawableRightConfig()
+    public final DrawableConfig getDrawableConfigRight()
     {
-        if (mDrawableRightConfig == null)
+        if (mDrawableConfigRight == null)
         {
-            mDrawableRightConfig = new DrawableConfig();
+            mDrawableConfigRight = new DrawableConfig();
         }
-        return mDrawableRightConfig;
+        return mDrawableConfigRight;
     }
 
     @Override
     protected void onDraw(Canvas canvas)
     {
-        getDrawableLeftConfig().setBounds(mDrawableLeft);
-        getDrawableRightConfig().setBounds(mDrawableRight);
+        getDrawableConfigLeft().setBounds(getDrawableLeft());
+        getDrawableConfigRight().setBounds(getDrawableRight());
         super.onDraw(canvas);
     }
 
@@ -97,8 +94,10 @@ public class FDrawableEditText extends FTagEditText
         if (event.getAction() == MotionEvent.ACTION_UP)
         {
             final float x = event.getX();
+            final Drawable drawableLeft = getDrawableLeft();
+            final Drawable drawableRight = getDrawableRight();
 
-            if (getCompoundDrawables()[0] != null)
+            if (drawableLeft != null)
             {
                 final int left = getPaddingLeft();
                 final int right = getTotalPaddingLeft();
@@ -108,7 +107,7 @@ public class FDrawableEditText extends FTagEditText
                     onClickDrawableLeft();
                 }
             }
-            if (getCompoundDrawables()[2] != null)
+            if (drawableRight != null)
             {
                 final int left = getWidth() - getTotalPaddingRight();
                 final int right = getWidth() - getPaddingRight();
