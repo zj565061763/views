@@ -53,12 +53,22 @@ public class FPasswordEditText extends FDrawableEditText implements FTagEditText
         updateInputType();
     }
 
+    /**
+     * 设置密码可见状态的图片
+     *
+     * @param drawable
+     */
     public void setDrawablePasswordVisible(Drawable drawable)
     {
         mDrawablePasswordVisible = drawable;
         updateTagViewState(this);
     }
 
+    /**
+     * 设置密码不可见状态的图片
+     *
+     * @param drawable
+     */
     public void setDrawablePasswordInvisible(Drawable drawable)
     {
         mDrawablePasswordInvisible = drawable;
