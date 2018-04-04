@@ -40,12 +40,22 @@ public class FDrawableEditText extends FTagEditText
 
     }
 
+    /**
+     * 设置左边图片
+     *
+     * @param drawableLeft
+     */
     public final void setDrawableLeft(Drawable drawableLeft)
     {
         getDrawableConfigLeft().setBounds(drawableLeft);
         setCompoundDrawables(drawableLeft, getCompoundDrawables()[1], getCompoundDrawables()[2], getCompoundDrawables()[3]);
     }
 
+    /**
+     * 设置右边图片
+     *
+     * @param drawableRight
+     */
     public final void setDrawableRight(Drawable drawableRight)
     {
         getDrawableConfigRight().setBounds(drawableRight);

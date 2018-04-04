@@ -41,10 +41,15 @@ public class FClearEditText extends FDrawableEditText implements FTagEditText.Ta
         getDrawableConfigRight().setWidth((int) (16 * scale));
     }
 
+    /**
+     * 设置清空内容图片
+     *
+     * @param drawableClear
+     */
     public void setDrawableClear(Drawable drawableClear)
     {
         mDrawableClear = drawableClear;
-
+        updateTagViewState(this);
     }
 
     @Override
