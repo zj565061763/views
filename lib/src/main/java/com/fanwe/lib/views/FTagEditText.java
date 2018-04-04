@@ -107,7 +107,7 @@ public class FTagEditText extends EditText implements TextWatcher
         }
     }
 
-    protected final void updateTagViewStateIfNeed()
+    private void updateTagViewStateIfNeed()
     {
         if (getTagViewHolder().isEmpty())
         {
