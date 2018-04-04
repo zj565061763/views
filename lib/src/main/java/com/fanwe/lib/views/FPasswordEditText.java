@@ -53,11 +53,13 @@ public class FPasswordEditText extends FDrawableEditText implements FTagEditText
     public void setDrawablePasswordVisible(Drawable drawable)
     {
         mDrawablePasswordVisible = drawable;
+        updateTagViewState(this);
     }
 
     public void setDrawablePasswordInvisible(Drawable drawable)
     {
         mDrawablePasswordInvisible = drawable;
+        updateTagViewState(this);
     }
 
     @Override
