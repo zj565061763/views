@@ -3,6 +3,7 @@ package com.fanwe.lib.views;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 
@@ -102,5 +103,25 @@ public class FClearEditText extends FTagEditText implements FTagEditText.TagView
         }
 
         setCompoundDrawables(getCompoundDrawables()[0], getCompoundDrawables()[1], drawable, getCompoundDrawables()[3]);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event)
+    {
+        if (event.getAction() == MotionEvent.ACTION_UP)
+        {
+            if (mClearDrawable != null)
+            {
+                boolean touch = event.getX() > (getWidth() - getTotalPaddingRight())
+                        && (event.getX() < ((getWidth() - getPaddingRight())));
+
+                if (touch)
+                {
+                    setText("");
+                }
+            }
+        }
+
+        return super.onTouchEvent(event);
     }
 }
