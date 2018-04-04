@@ -96,11 +96,11 @@ public class FPasswordEditText extends FDrawableEditText implements FTagEditText
 
         updateTagViewState(this);
         updateInputType();
-        setSelection(getText().toString().length());
     }
 
     private void updateInputType()
     {
+        final int selection = getSelectionEnd();
         if (mIsPasswordVisible)
         {
             setInputType(InputType.TYPE_CLASS_TEXT);
@@ -108,5 +108,6 @@ public class FPasswordEditText extends FDrawableEditText implements FTagEditText
         {
             setInputType(TYPE_TEXT_PASSWORD);
         }
+        setSelection(selection);
     }
 }
