@@ -149,7 +149,7 @@ public class FRecyclerView extends RecyclerView
      *
      * @param drawable
      */
-    public void addDividerHorizontal(Drawable drawable)
+    public final void addDividerHorizontal(Drawable drawable)
     {
         addDividerHorizontal(drawable, 0);
     }
@@ -160,7 +160,7 @@ public class FRecyclerView extends RecyclerView
      * @param drawable
      * @param padding  分割线左右padding
      */
-    public void addDividerHorizontal(Drawable drawable, int padding)
+    public final void addDividerHorizontal(Drawable drawable, int padding)
     {
         FDividerItemDecoration divider = new FDividerItemDecoration(FDividerItemDecoration.HORIZONTAL);
         divider.setDrawable(drawable);
@@ -173,7 +173,7 @@ public class FRecyclerView extends RecyclerView
      *
      * @param drawable
      */
-    public void addDividerVertical(Drawable drawable)
+    public final void addDividerVertical(Drawable drawable)
     {
         addDividerVertical(drawable, 0);
     }
@@ -184,7 +184,7 @@ public class FRecyclerView extends RecyclerView
      * @param drawable
      * @param padding  分割线上下padding
      */
-    public void addDividerVertical(Drawable drawable, int padding)
+    public final void addDividerVertical(Drawable drawable, int padding)
     {
         FDividerItemDecoration divider = new FDividerItemDecoration(FDividerItemDecoration.VERTICAL);
         divider.setDrawable(drawable);
@@ -193,6 +193,4 @@ public class FRecyclerView extends RecyclerView
     }
 
     //----------divider end----------
-
-
 }
