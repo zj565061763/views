@@ -27,6 +27,7 @@ android {
 
 dependencies {
     compileOnly 'com.android.support:appcompat-v7:+'
+    compileOnly 'com.android.support:recyclerview-v7:+'
 }
 
 // 指定编码
