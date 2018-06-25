@@ -1,12 +1,11 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 26
-
+    compileSdkVersion 27
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 20180402
+        versionCode 20180625
         versionName "1.0.0"
     }
 
@@ -19,4 +18,5 @@ android {
 }
 
 dependencies {
+    compileOnly 'com.android.support:appcompat-v7:+'
 }

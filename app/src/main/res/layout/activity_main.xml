@@ -4,12 +4,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.fanwe.lib.views.FClearEditText
-        android:layout_width="match_parent"
-        android:layout_height="50dp" />
-
-    <com.fanwe.lib.views.FPasswordEditText
-        android:layout_width="match_parent"
-        android:layout_height="50dp" />
+    <com.fanwe.lib.views.FAutoHeightImageView
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        android:src="@drawable/autoheight" />
 
 </LinearLayout>
