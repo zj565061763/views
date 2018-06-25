@@ -16,27 +16,20 @@ public class FReplaceableLayout extends FrameLayout
     public FReplaceableLayout(Context context)
     {
         super(context);
-        init();
     }
 
     public FReplaceableLayout(Context context, AttributeSet attrs)
     {
         super(context, attrs);
-        init();
     }
 
     public FReplaceableLayout(Context context, AttributeSet attrs, int defStyleAttr)
     {
         super(context, attrs, defStyleAttr);
-        init();
     }
 
     private View mContentView;
     private final List<Callback> mListCallback = new CopyOnWriteArrayList<>();
-
-    private void init()
-    {
-    }
 
     /**
      * 添加回调
