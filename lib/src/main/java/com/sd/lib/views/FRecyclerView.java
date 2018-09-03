@@ -1,4 +1,4 @@
-package com.fanwe.lib.views;
+package com.sd.lib.views;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -7,7 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
-import com.fanwe.lib.views.utils.FDividerItemDecoration;
+import com.sd.lib.views.utils.FDividerItemDecoration;
 
 public class FRecyclerView extends RecyclerView
 {

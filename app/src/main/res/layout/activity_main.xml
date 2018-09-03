@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.fanwe.lib.views.FAutoHeightImageView
+    <com.sd.lib.views.FAutoHeightImageView
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:background="@color/colorAccent"
