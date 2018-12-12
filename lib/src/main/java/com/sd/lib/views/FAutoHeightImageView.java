@@ -10,16 +10,30 @@ public class FAutoHeightImageView extends AppCompatImageView
     public FAutoHeightImageView(Context context)
     {
         super(context);
-    }
-
-    public FAutoHeightImageView(Context context, AttributeSet attrs, int defStyle)
-    {
-        super(context, attrs, defStyle);
+        init();
     }
 
     public FAutoHeightImageView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
+        init();
+    }
+
+    public FAutoHeightImageView(Context context, AttributeSet attrs, int defStyle)
+    {
+        super(context, attrs, defStyle);
+        init();
+    }
+
+    private void init()
+    {
+        setScaleType(ScaleType.FIT_XY);
+    }
+
+    @Override
+    public void setScaleType(ScaleType scaleType)
+    {
+        super.setScaleType(ScaleType.FIT_XY);
     }
 
     @Override
