@@ -7,19 +7,19 @@ import android.util.AttributeSet;
 /**
  * 圆形CardView
  */
-public class FCircleCardView extends CardView
+public class FCircularCardView extends CardView
 {
-    public FCircleCardView(Context context)
+    public FCircularCardView(Context context)
     {
         super(context);
     }
 
-    public FCircleCardView(Context context, AttributeSet attrs)
+    public FCircularCardView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
     }
 
-    public FCircleCardView(Context context, AttributeSet attrs, int defStyleAttr)
+    public FCircularCardView(Context context, AttributeSet attrs, int defStyleAttr)
     {
         super(context, attrs, defStyleAttr);
     }
