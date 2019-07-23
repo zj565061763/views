@@ -2,9 +2,10 @@ package com.sd.lib.views;
 
 import android.content.Context;
 import android.os.CountDownTimer;
-import android.support.v7.widget.AppCompatButton;
 import android.util.AttributeSet;
 import android.view.View;
+
+import androidx.appcompat.widget.AppCompatButton;
 
 public class FCountDownButton extends AppCompatButton
 {

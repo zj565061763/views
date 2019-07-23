@@ -4,12 +4,12 @@ apply plugin: 'com.github.dcendents.android-maven'
 group = 'com.github.zj565061763'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 20190712
-        versionName "1.1.3"
+        versionCode 20190723
+        versionName "1.1.4"
     }
 
     buildTypes {
@@ -26,9 +26,9 @@ android {
 }
 
 dependencies {
-    compileOnly 'com.android.support:appcompat-v7:+'
-    compileOnly 'com.android.support:recyclerview-v7:+'
-    compileOnly 'com.android.support:cardview-v7:+'
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
 }
 
 // 指定编码

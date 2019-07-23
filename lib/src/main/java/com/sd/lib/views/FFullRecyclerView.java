@@ -1,11 +1,12 @@
 package com.sd.lib.views;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 /**
- * 一次性全部展示的RecyclerView，需要在android.support.v4.widget.NestedScrollView里面使用
+ * 一次性全部展示的RecyclerView，需要在NestedScrollView里面使用
  */
 public class FFullRecyclerView extends FRecyclerView
 {
