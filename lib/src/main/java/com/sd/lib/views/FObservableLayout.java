@@ -102,7 +102,7 @@ public class FObservableLayout extends FrameLayout
     {
         super.onViewRemoved(child);
         if (child == mContentView)
-            throw new RuntimeException("Illegal child:" + child);
+            setContentView(null);
     }
 
     public interface Callback
