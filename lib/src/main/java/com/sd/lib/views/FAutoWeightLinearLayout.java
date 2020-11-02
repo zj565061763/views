@@ -68,7 +68,7 @@ public class FAutoWeightLinearLayout extends LinearLayout
     {
         private void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
         {
-            final int totalSize = getSize(FAutoWeightLinearLayout.this);
+            final int totalSize = getSize(FAutoWeightLinearLayout.this) - getPadding(FAutoWeightLinearLayout.this);
             final int headerSize = getSize(mHeaderView);
             final int footerSize = getSize(mFooterView);
             final int leftSize = totalSize - footerSize;
@@ -84,6 +84,8 @@ public class FAutoWeightLinearLayout extends LinearLayout
         }
 
         protected abstract int getSize(View view);
+
+        protected abstract int getPadding(View view);
     }
 
     private final class HorizontalSizeHandler extends SizeHandler
@@ -93,6 +95,12 @@ public class FAutoWeightLinearLayout extends LinearLayout
         {
             return view.getMeasuredWidth();
         }
+
+        @Override
+        protected int getPadding(View view)
+        {
+            return view.getPaddingLeft() + view.getPaddingRight();
+        }
     }
 
     private final class VerticalSizeHandler extends SizeHandler
@@ -101,6 +109,12 @@ public class FAutoWeightLinearLayout extends LinearLayout
         protected int getSize(View view)
         {
             return view.getMeasuredHeight();
+        }
+
+        @Override
+        protected int getPadding(View view)
+        {
+            return view.getPaddingTop() + view.getPaddingBottom();
         }
     }
 
