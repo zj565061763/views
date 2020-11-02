@@ -70,8 +70,8 @@ public class FAutoWeightLinearLayout extends LinearLayout
         private void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
         {
             final int totalSize = getSize(FAutoWeightLinearLayout.this) - getPadding(FAutoWeightLinearLayout.this);
-            final int headerSize = getSize(mHeaderView);
-            final int footerSize = getSize(mFooterView);
+            final int headerSize = getSize(mHeaderView) + getMargin(mHeaderView);
+            final int footerSize = getSize(mFooterView) + getMargin(mFooterView);
             final int leftSize = totalSize - footerSize;
             if (headerSize >= leftSize)
             {
@@ -108,7 +108,12 @@ public class FAutoWeightLinearLayout extends LinearLayout
         @Override
         protected int getMargin(View view)
         {
-            return 0;
+            final ViewGroup.LayoutParams params = view.getLayoutParams();
+            if (!(params instanceof MarginLayoutParams))
+                return 0;
+
+            final MarginLayoutParams mp = (MarginLayoutParams) params;
+            return mp.leftMargin + mp.rightMargin;
         }
     }
 
@@ -129,7 +134,12 @@ public class FAutoWeightLinearLayout extends LinearLayout
         @Override
         protected int getMargin(View view)
         {
-            return 0;
+            final ViewGroup.LayoutParams params = view.getLayoutParams();
+            if (!(params instanceof MarginLayoutParams))
+                return 0;
+
+            final MarginLayoutParams mp = (MarginLayoutParams) params;
+            return mp.topMargin + mp.bottomMargin;
         }
     }
 
