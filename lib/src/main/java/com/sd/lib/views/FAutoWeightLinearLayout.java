@@ -3,6 +3,7 @@ package com.sd.lib.views;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 public class FAutoWeightLinearLayout extends LinearLayout
@@ -86,6 +87,8 @@ public class FAutoWeightLinearLayout extends LinearLayout
         protected abstract int getSize(View view);
 
         protected abstract int getPadding(View view);
+
+        protected abstract int getMargin(View view);
     }
 
     private final class HorizontalSizeHandler extends SizeHandler
@@ -100,6 +103,12 @@ public class FAutoWeightLinearLayout extends LinearLayout
         protected int getPadding(View view)
         {
             return view.getPaddingLeft() + view.getPaddingRight();
+        }
+
+        @Override
+        protected int getMargin(View view)
+        {
+            return 0;
         }
     }
 
@@ -116,17 +125,24 @@ public class FAutoWeightLinearLayout extends LinearLayout
         {
             return view.getPaddingTop() + view.getPaddingBottom();
         }
+
+        @Override
+        protected int getMargin(View view)
+        {
+            return 0;
+        }
     }
 
     private static boolean setWeight(int weight, View view)
     {
-        final LinearLayout.LayoutParams params = (LayoutParams) view.getLayoutParams();
-        if (params == null)
+        final ViewGroup.LayoutParams params = view.getLayoutParams();
+        if (!(params instanceof LinearLayout.LayoutParams))
             return false;
 
-        if (params.weight != weight)
+        final LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) params;
+        if (lp.weight != weight)
         {
-            params.weight = weight;
+            lp.weight = weight;
             return true;
         }
         return false;
