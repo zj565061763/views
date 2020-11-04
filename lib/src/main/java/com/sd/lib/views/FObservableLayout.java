@@ -5,8 +5,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 当内容view变化会通知回调
@@ -29,7 +29,7 @@ public class FObservableLayout extends FrameLayout
     }
 
     private View mContentView;
-    private final List<Callback> mListCallback = new CopyOnWriteArrayList<>();
+    private final Map<Callback, String> mCallbackHolder = new ConcurrentHashMap<>();
 
     /**
      * 添加回调
@@ -38,10 +38,10 @@ public class FObservableLayout extends FrameLayout
      */
     public void addCallback(Callback callback)
     {
-        if (callback == null || mListCallback.contains(callback))
+        if (callback == null)
             return;
 
-        mListCallback.add(callback);
+        mCallbackHolder.put(callback, "");
     }
 
     /**
@@ -51,7 +51,10 @@ public class FObservableLayout extends FrameLayout
      */
     public void removeCallback(Callback callback)
     {
-        mListCallback.remove(callback);
+        if (callback == null)
+            return;
+
+        mCallbackHolder.remove(callback);
     }
 
     /**
@@ -72,7 +75,7 @@ public class FObservableLayout extends FrameLayout
             if (child != null && child.getParent() != this)
                 addView(child);
 
-            for (Callback item : mListCallback)
+            for (Callback item : mCallbackHolder.keySet())
             {
                 item.onContentChanged(old, child);
             }
@@ -102,7 +105,10 @@ public class FObservableLayout extends FrameLayout
     {
         super.onViewRemoved(child);
         if (child == mContentView)
+        {
+            // child被直接调用移除，这里也需要通知回调对象
             setContentView(null);
+        }
     }
 
     public interface Callback
