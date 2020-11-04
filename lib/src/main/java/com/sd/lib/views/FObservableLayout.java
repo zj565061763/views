@@ -3,6 +3,8 @@ package com.sd.lib.views;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.FrameLayout;
 
 import java.util.Map;
@@ -58,26 +60,31 @@ public class FObservableLayout extends FrameLayout
     }
 
     /**
-     * 把当前容器的内容替换为child
+     * 设置内容View
      *
-     * @param child
+     * @param view
      */
-    public final void setContentView(View child)
+    public final void setContentView(View view)
     {
-        final View old = mContentView;
-        if (old != child)
+        final View oldView = mContentView;
+        if (oldView != view)
         {
-            mContentView = child;
+            mContentView = view;
 
-            if (old != null)
-                removeView(old);
+            if (oldView != null)
+                removeView(oldView);
 
-            if (child != null && child.getParent() != this)
-                addView(child);
+            if (view != null)
+            {
+                if (view.getParent() != FObservableLayout.this)
+                    removeViewFromParent(view);
+
+                addView(view);
+            }
 
             for (Callback item : mCallbackHolder.keySet())
             {
-                item.onContentChanged(old, child);
+                item.onContentChanged(oldView, view);
             }
         }
     }
@@ -108,6 +115,24 @@ public class FObservableLayout extends FrameLayout
         {
             // child被直接调用移除，这里也需要通知回调对象
             setContentView(null);
+        }
+    }
+
+    private static void removeViewFromParent(final View view)
+    {
+        if (view == null)
+            return;
+
+        final ViewParent parent = view.getParent();
+        if (parent == null)
+            return;
+
+        try
+        {
+            final ViewGroup viewGroup = (ViewGroup) parent;
+            viewGroup.removeView(view);
+        } catch (Exception e)
+        {
         }
     }
 
