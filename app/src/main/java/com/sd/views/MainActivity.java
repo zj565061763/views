@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View v)
             {
                 final String text = mBinding.tvHeader.getText().toString();
-                mBinding.tvHeader.setText(text + text);
+                mBinding.tvHeader.setText(text + "append");
             }
         });
 
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View v)
             {
                 final String text = mBinding.tvFooter.getText().toString();
-                mBinding.tvFooter.setText(text + text);
+                mBinding.tvFooter.setText(text + "append");
             }
         });
 
