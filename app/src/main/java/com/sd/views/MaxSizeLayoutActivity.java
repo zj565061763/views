@@ -5,17 +5,17 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.sd.views.databinding.ActivityMainBinding;
+import com.sd.views.databinding.ActivityMaxSizeLayoutBinding;
 
-public class MainActivity extends AppCompatActivity {
-    public static final String TAG = MainActivity.class.getSimpleName();
+public class MaxSizeLayoutActivity extends AppCompatActivity {
+    public static final String TAG = MaxSizeLayoutActivity.class.getSimpleName();
 
-    private ActivityMainBinding mBinding;
+    private ActivityMaxSizeLayoutBinding mBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = ActivityMainBinding.inflate(getLayoutInflater());
+        mBinding = ActivityMaxSizeLayoutBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
 
         // 设置最大宽度
