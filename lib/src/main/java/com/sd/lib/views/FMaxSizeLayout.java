@@ -2,7 +2,6 @@ package com.sd.lib.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
@@ -56,7 +55,6 @@ public class FMaxSizeLayout extends FrameLayout {
         if (mMaxWidth != null || mMaxHeight != null) {
             super.onMeasure(getSpec(widthMeasureSpec, mMaxWidth),
                     getSpec(heightMeasureSpec, mMaxHeight));
-            Log.i(FMaxSizeLayout.class.getSimpleName(), getMeasuredWidth() + "," + getMeasuredHeight());
         } else {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         }
