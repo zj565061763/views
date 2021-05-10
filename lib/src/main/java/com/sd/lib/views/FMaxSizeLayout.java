@@ -2,13 +2,16 @@ package com.sd.lib.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+/**
+ * 限制最大宽高的布局
+ */
 public class FMaxSizeLayout extends FrameLayout {
-
     private Integer mMaxWidth = null;
     private Integer mMaxHeight = null;
 
@@ -22,8 +25,8 @@ public class FMaxSizeLayout extends FrameLayout {
      * @param maxWidth
      */
     public void setMaxWidth(Integer maxWidth) {
-        if (maxWidth != null && maxWidth < 0) {
-            maxWidth = 0;
+        if (maxWidth != null && maxWidth <= 0) {
+            maxWidth = null;
         }
 
         if (mMaxWidth != maxWidth) {
@@ -38,8 +41,8 @@ public class FMaxSizeLayout extends FrameLayout {
      * @param maxHeight
      */
     public void setMaxHeight(Integer maxHeight) {
-        if (maxHeight != null && maxHeight < 0) {
-            maxHeight = 0;
+        if (maxHeight != null && maxHeight <= 0) {
+            maxHeight = null;
         }
 
         if (mMaxHeight != maxHeight) {
@@ -50,25 +53,31 @@ public class FMaxSizeLayout extends FrameLayout {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
         if (mMaxWidth != null || mMaxHeight != null) {
-            int widthSpec = widthMeasureSpec;
-            int heightSpec = heightMeasureSpec;
-
-            if (mMaxWidth != null) {
-                if (getMeasuredWidth() > mMaxWidth) {
-                    widthSpec = MeasureSpec.makeMeasureSpec(mMaxWidth, MeasureSpec.AT_MOST);
-                }
-            }
-
-            if (mMaxHeight != null) {
-                if (getMeasuredHeight() > mMaxHeight) {
-                    heightSpec = MeasureSpec.makeMeasureSpec(mMaxHeight, MeasureSpec.AT_MOST);
-                }
-            }
-
-            super.onMeasure(widthSpec, heightSpec);
+            super.onMeasure(getSpec(widthMeasureSpec, mMaxWidth),
+                    getSpec(heightMeasureSpec, mMaxHeight));
+            Log.i(FMaxSizeLayout.class.getSimpleName(), getMeasuredWidth() + "," + getMeasuredHeight());
+        } else {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         }
+    }
+
+    private static int getSpec(int measureSpec, Integer maxSize) {
+        if (maxSize == null) {
+            return measureSpec;
+        }
+
+        int resultSpec = measureSpec;
+
+        final int size = MeasureSpec.getSize(measureSpec);
+        final int mode = MeasureSpec.getMode(measureSpec);
+        if (mode == MeasureSpec.EXACTLY || mode == MeasureSpec.AT_MOST) {
+            if (size > maxSize) {
+                resultSpec = MeasureSpec.makeMeasureSpec(maxSize, mode);
+            }
+        } else if (mode == MeasureSpec.UNSPECIFIED) {
+            resultSpec = MeasureSpec.makeMeasureSpec(maxSize, MeasureSpec.AT_MOST);
+        }
+        return resultSpec;
     }
 }

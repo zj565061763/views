@@ -18,8 +18,10 @@ public class MainActivity extends AppCompatActivity {
         mBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
 
+        // 设置最大宽度
+        mBinding.maxSizeLayout.setMaxWidth(300);
         // 设置最大高度
-        mBinding.viewMaxSizeLayout.setMaxHeight(300);
+        mBinding.maxSizeLayout.setMaxHeight(300);
 
         mBinding.btnSmall.setOnClickListener(new View.OnClickListener() {
             @Override
