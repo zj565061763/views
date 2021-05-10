@@ -7,46 +7,31 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.sd.views.databinding.ActivityMainBinding;
 
-public class MainActivity extends AppCompatActivity
-{
+public class MainActivity extends AppCompatActivity {
     public static final String TAG = MainActivity.class.getSimpleName();
 
     private ActivityMainBinding mBinding;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
 
-        mBinding.btnHeader.setOnClickListener(new View.OnClickListener()
-        {
+        // 设置最大高度
+        mBinding.viewMaxSizeLayout.setMaxHeight(300);
+
+        mBinding.btnSmall.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                final String text = mBinding.tvHeader.getText().toString();
-                mBinding.tvHeader.setText(text + "append");
+            public void onClick(View v) {
+                mBinding.tvContent.setText("123456789");
             }
         });
-
-        mBinding.btnFooter.setOnClickListener(new View.OnClickListener()
-        {
+        mBinding.btnBig.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                final String text = mBinding.tvFooter.getText().toString();
-                mBinding.tvFooter.setText(text + "append");
-            }
-        });
-
-        mBinding.btnReset.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                mBinding.tvHeader.setText("header");
-                mBinding.tvFooter.setText("footer");
+            public void onClick(View v) {
+                final String content = mBinding.tvContent.getText().toString() + mBinding.tvContent.getText().toString();
+                mBinding.tvContent.setText(content);
             }
         });
     }
