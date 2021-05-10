@@ -1,15 +1,20 @@
-apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
+plugins {
+    id 'com.android.library'
+    id 'maven-publish'
+}
 
-group = 'com.github.zj565061763'
+def libGroupId = "com.sd.lib.android"
+def libArtifactId = "views"
+def libVersionCode = 20201216
+def libVersionName = "1.1.13"
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 28
-        versionCode 20201216
-        versionName "1.1.13"
+        targetSdkVersion 29
+        versionCode libVersionCode
+        versionName libVersionName
     }
 
     buildTypes {
@@ -26,34 +31,29 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
 }
 
-tasks.withType(Javadoc) {
-    options {
-        encoding 'UTF-8'
-        charSet 'UTF-8'
+task generateSourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier 'sources'
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+
+                groupId = libGroupId
+                artifactId = libArtifactId
+                version = libVersionName
+
+                // 上传源码
+                artifact generateSourcesJar
+            }
+        }
     }
-}
-
-task sourcesJar(type: Jar) {
-    getArchiveClassifier().set('sources')
-    from android.sourceSets.main.java.sourceFiles
-}
-
-task javadoc(type: Javadoc) {
-    source = android.sourceSets.main.java.sourceFiles
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    getArchiveClassifier().set('javadoc')
-    from javadoc.destinationDir
-}
-
-artifacts {
-    archives sourcesJar
-    archives javadocJar
 }
