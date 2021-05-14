@@ -21,7 +21,7 @@
                 android:background="@color/colorAccent"
                 android:ellipsize="end"
                 android:lineSpacingExtra="10dp"
-                android:maxLines="2"
+                android:maxLines="3"
                 android:text="hello"
                 android:textColor="#FFFFFF"
                 android:textSize="30sp" />
@@ -36,8 +36,8 @@
             android:background="@color/colorAccent"
             android:ellipsize="end"
             android:lineSpacingExtra="10dp"
-            android:maxLines="2"
-            android:text="hellohellohellohellohellohellohello"
+            android:maxLines="3"
+            android:text="hellohellohellohellohellohellohellohello"
             android:textColor="#FFFFFF"
             android:textSize="30sp" />
 
