@@ -35,7 +35,7 @@
             android:background="@color/colorAccent"
             android:ellipsize="end"
             android:maxLines="2"
-            android:text="hellohellohellohellohellohellohellohellohellohellohello"
+            android:text="hellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohello"
             android:textColor="#FFFFFF"
             android:textSize="30sp" />
 
