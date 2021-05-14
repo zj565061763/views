@@ -32,7 +32,7 @@ class FTextLineLayout : FrameLayout {
         val totalLineHeight = viewHeight - totalPadding - ((totalLine - 1) * lineSpacing)
         val lineHeight = totalLineHeight / totalLine
 
-        val deltaHeight = deltaLine * lineHeight + deltaLine * lineSpacing
+        val deltaHeight = deltaLine * (lineHeight + lineSpacing)
         val targetHeight = viewHeight + deltaHeight
 
         if (targetHeight > 0) {
