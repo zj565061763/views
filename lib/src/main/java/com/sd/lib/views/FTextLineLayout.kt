@@ -27,13 +27,14 @@ class FTextLineLayout : FrameLayout {
         val totalPadding = textView.layout.topPadding.absoluteValue + textView.bottom.absoluteValue
 
         val totalLineHeight = textView.measuredHeight - totalSpacing - totalPadding
-        val lineHeight = (totalLineHeight / totalLine + 0.5F).toInt()
+        val lineHeight = totalLineHeight / totalLine
 
         // 目标高度
-        val totalTargetSpacing = ((maxLines - 1) * lineSpacing + 0.5F).toInt()
+        val totalTargetSpacing = (maxLines - 1) * lineSpacing
         val targetHeight = lineHeight * maxLines + totalTargetSpacing + totalPadding
         if (targetHeight > 0) {
-            val heightSpec = MeasureSpec.makeMeasureSpec(targetHeight, MeasureSpec.EXACTLY)
+            val finalHeight = (targetHeight + 0.5).toInt()
+            val heightSpec = MeasureSpec.makeMeasureSpec(finalHeight, MeasureSpec.EXACTLY)
             super.onMeasure(widthMeasureSpec, heightSpec)
         }
     }
