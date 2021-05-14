@@ -8,6 +8,7 @@
         android:id="@+id/btn_small"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="onClick"
         android:text="small"
         android:textAllCaps="false" />
 
@@ -15,6 +16,7 @@
         android:id="@+id/btn_big"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="onClick"
         android:text="big"
         android:textAllCaps="false" />
 

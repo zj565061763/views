@@ -1,40 +1,33 @@
-package com.sd.views;
+package com.sd.views
 
-import android.os.Bundle;
-import android.view.View;
+import android.os.Bundle
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import com.sd.views.databinding.ActivityMaxSizeLayoutBinding
 
-import androidx.appcompat.app.AppCompatActivity;
+class MaxSizeLayoutActivity : AppCompatActivity(), View.OnClickListener {
+    val TAG = MaxSizeLayoutActivity::class.java.simpleName
 
-import com.sd.views.databinding.ActivityMaxSizeLayoutBinding;
+    private lateinit var _binding: ActivityMaxSizeLayoutBinding
 
-public class MaxSizeLayoutActivity extends AppCompatActivity {
-    public static final String TAG = MaxSizeLayoutActivity.class.getSimpleName();
-
-    private ActivityMaxSizeLayoutBinding _binding;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        _binding = ActivityMaxSizeLayoutBinding.inflate(getLayoutInflater());
-        setContentView(_binding.getRoot());
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        _binding = ActivityMaxSizeLayoutBinding.inflate(layoutInflater)
+        setContentView(_binding.root)
 
         // 设置最大宽度
-        _binding.maxSizeLayout.setMaxWidth(300);
+        _binding.maxSizeLayout.setMaxWidth(300)
         // 设置最大高度
-        _binding.maxSizeLayout.setMaxHeight(300);
+        _binding.maxSizeLayout.setMaxHeight(300)
+    }
 
-        _binding.btnSmall.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                _binding.tvContent.setText("123456789");
+    override fun onClick(v: View?) {
+        when (v) {
+            _binding.btnSmall -> _binding.tvContent.text = "123456789"
+            _binding.btnBig -> {
+                val text = _binding.tvContent.text.toString()
+                _binding.tvContent.text = text + text
             }
-        });
-        _binding.btnBig.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final String content = _binding.tvContent.getText().toString() + _binding.tvContent.getText().toString();
-                _binding.tvContent.setText(content);
-            }
-        });
+        }
     }
 }
