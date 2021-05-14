@@ -1,53 +1,48 @@
-package com.sd.lib.views;
+package com.sd.lib.views
 
-import android.content.Context;
-import android.util.AttributeSet;
-import android.util.Log;
-import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.TextView;
+import android.content.Context
+import android.util.AttributeSet
+import android.view.View
+import android.widget.FrameLayout
+import android.widget.TextView
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+class FTextLineLayout : FrameLayout {
+    private var _textView: TextView? = null
 
-public class FTextHeightLayout extends FrameLayout
-{
-    private TextView mTextView;
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
-    public FTextHeightLayout(@NonNull Context context, @Nullable AttributeSet attrs)
-    {
-        super(context, attrs);
-    }
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+        val textView = _textView ?: return
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
-    {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        if (mTextView != null)
-        {
-            final int lineHeight = mTextView.getLayout().getHeight();
-            final int measureHeight = mTextView.getMeasuredHeight();
-            Log.i(FTextHeightLayout.class.getSimpleName(), "lineHeight:" + lineHeight + " measureHeight:" + measureHeight);
+        val totalLine = textView.layout.lineCount
+        if (totalLine <= 0) return
+
+        val maxLines = textView.maxLines
+        if (maxLines <= 0) return
+
+        val totalHeight = textView.measuredHeight.toFloat()
+        val lineHeight = (totalHeight.div(totalLine) + 0.5F).toInt()
+
+        // 目标高度
+        val targetHeight = lineHeight * maxLines
+        if (targetHeight > 0) {
+            val heightSpec = MeasureSpec.makeMeasureSpec(targetHeight, MeasureSpec.EXACTLY)
+            super.onMeasure(widthMeasureSpec, heightSpec)
         }
     }
 
-    @Override
-    public void onViewAdded(View child)
-    {
-        super.onViewAdded(child);
-        if (mTextView == null && child instanceof TextView)
-        {
-            mTextView = (TextView) child;
+    override fun onViewAdded(child: View) {
+        super.onViewAdded(child)
+        if (_textView == null && child is TextView) {
+            _textView = child
         }
     }
 
-    @Override
-    public void onViewRemoved(View child)
-    {
-        super.onViewRemoved(child);
-        if (mTextView == child)
-        {
-            mTextView = null;
+    override fun onViewRemoved(child: View) {
+        super.onViewRemoved(child)
+        if (_textView === child) {
+            _textView = null
         }
     }
 }

@@ -4,8 +4,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.sd.views.databinding.ActivityTextHeightLayoutBinding
 
-class TextHeightLayoutActivity : AppCompatActivity() {
-    val TAG = TextHeightLayoutActivity::class.java.simpleName
+class TextLineLayoutActivity : AppCompatActivity() {
+    val TAG = TextLineLayoutActivity::class.java.simpleName
 
     private lateinit var _binding: ActivityTextHeightLayoutBinding
 

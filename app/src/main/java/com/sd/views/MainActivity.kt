@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         when (v) {
             _binding.btnLinearLayout -> startActivity(Intent(this, LinearLayoutActivity::class.java))
             _binding.btnMaxSize -> startActivity(Intent(this, MaxSizeLayoutActivity::class.java))
-            _binding.btnTextHeight -> startActivity(Intent(this, TextHeightLayoutActivity::class.java))
+            _binding.btnTextLine -> startActivity(Intent(this, TextLineLayoutActivity::class.java))
         }
     }
 }
