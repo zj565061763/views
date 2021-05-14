@@ -20,9 +20,8 @@
                 android:layout_height="wrap_content"
                 android:background="@color/colorAccent"
                 android:ellipsize="end"
-                android:lineSpacingExtra="10dp"
-                android:maxLines="3"
-                android:text="hellohellohellohellohello"
+                android:maxLines="2"
+                android:text="hello"
                 android:textColor="#FFFFFF"
                 android:textSize="30sp" />
 
@@ -35,9 +34,8 @@
             android:layout_weight="1"
             android:background="@color/colorAccent"
             android:ellipsize="end"
-            android:lineSpacingExtra="10dp"
-            android:maxLines="3"
-            android:text="hellohellohellohellohellohellohellohello"
+            android:maxLines="2"
+            android:text="hellohellohellohellohellohellohellohellohellohellohello"
             android:textColor="#FFFFFF"
             android:textSize="30sp" />
 
