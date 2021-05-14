@@ -26,7 +26,7 @@ class FTextLineLayout : FrameLayout {
         if (deltaLine <= 0) return
 
         val viewHeight = textView.measuredHeight
-        val totalPadding = textView.layout.topPadding.absoluteValue + textView.bottom.absoluteValue
+        val totalPadding = textView.layout.topPadding.absoluteValue + textView.layout.bottomPadding.absoluteValue
         val lineSpacing = textView.lineSpacingExtra * textView.lineSpacingMultiplier
 
         val totalLineHeight = viewHeight - totalPadding - ((totalLine - 1) * lineSpacing)
