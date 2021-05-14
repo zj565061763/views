@@ -16,11 +16,14 @@ class FTextLineLayout : FrameLayout {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         val textView = _textView ?: return
 
+        val maxLines = textView.maxLines
+        if (maxLines <= 0) return
+
         val totalLine = textView.layout.lineCount
         if (totalLine <= 0) return
 
-        val maxLines = textView.maxLines
-        if (maxLines <= 0) return
+        val deltaLine = maxLines - totalLine
+        if (deltaLine <= 0) return
 
         val lineSpacing = textView.lineSpacingExtra * textView.lineSpacingMultiplier
         val totalPadding = textView.layout.topPadding.absoluteValue + textView.bottom.absoluteValue
