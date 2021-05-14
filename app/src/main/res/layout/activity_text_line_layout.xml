@@ -22,7 +22,7 @@
                 android:ellipsize="end"
                 android:lineSpacingExtra="10dp"
                 android:maxLines="3"
-                android:text="hello"
+                android:text="hellohellohellohellohello"
                 android:textColor="#FFFFFF"
                 android:textSize="30sp" />
 
