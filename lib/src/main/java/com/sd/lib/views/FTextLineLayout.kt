@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
+import kotlin.math.absoluteValue
 
 class FTextLineLayout : FrameLayout {
     private var _textView: TextView? = null
@@ -21,11 +22,16 @@ class FTextLineLayout : FrameLayout {
         val maxLines = textView.maxLines
         if (maxLines <= 0) return
 
-        val totalHeight = textView.measuredHeight.toFloat()
-        val lineHeight = (totalHeight.div(totalLine) + 0.5F).toInt()
+        val lineSpacing = textView.lineSpacingExtra * textView.lineSpacingMultiplier
+        val totalSpacing = (totalLine - 1) * lineSpacing
+        val totalPadding = textView.layout.topPadding.absoluteValue + textView.bottom.absoluteValue
+
+        val totalLineHeight = textView.measuredHeight - totalSpacing - totalPadding
+        val lineHeight = (totalLineHeight / totalLine + 0.5F).toInt()
 
         // 目标高度
-        val targetHeight = lineHeight * maxLines
+        val totalTargetSpacing = ((maxLines - 1) * lineSpacing + 0.5F).toInt()
+        val targetHeight = lineHeight * maxLines + totalTargetSpacing + totalPadding
         if (targetHeight > 0) {
             val heightSpec = MeasureSpec.makeMeasureSpec(targetHeight, MeasureSpec.EXACTLY)
             super.onMeasure(widthMeasureSpec, heightSpec)
