@@ -4,21 +4,41 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.sd.lib.views.FTextLineLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary">
+        android:orientation="horizontal">
+
+        <com.sd.lib.views.FTextLineLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/colorPrimary">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorAccent"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="hello"
+                android:textColor="#FFFFFF"
+                android:textSize="30sp" />
+
+        </com.sd.lib.views.FTextLineLayout>
 
         <TextView
-            android:layout_width="200dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="1dp"
+            android:layout_weight="1"
             android:background="@color/colorAccent"
             android:ellipsize="end"
             android:maxLines="2"
-            android:text="hello"
+            android:text="hellohellohellohellohellohellohello"
             android:textColor="#FFFFFF"
-            android:textSize="20sp" />
+            android:textSize="30sp" />
 
-    </com.sd.lib.views.FTextLineLayout>
+    </LinearLayout>
 
 </LinearLayout>
