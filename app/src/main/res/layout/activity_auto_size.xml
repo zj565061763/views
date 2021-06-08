@@ -5,19 +5,19 @@
     android:orientation="vertical">
 
     <Button
-        android:id="@+id/btn_small"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="onClick"
-        android:text="small"
-        android:textAllCaps="false" />
-
-    <Button
         android:id="@+id/btn_big"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="onClick"
         android:text="big"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/btn_reset"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onClick"
+        android:text="reset"
         android:textAllCaps="false" />
 
     <LinearLayout
@@ -31,11 +31,14 @@
 
             <com.sd.lib.views.FAutoSizeTextView
                 android:id="@+id/tv_content"
-                android:layout_width="wrap_content"
+                android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="hello"
-                android:textColor="#FFFFFF" />
+                android:textColor="#FFFFFF"
+                android:textSize="15sp" />
 
         </FrameLayout>
 

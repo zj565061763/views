@@ -16,20 +16,14 @@ class AutoSizeActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v) {
-            _binding.btnSmall -> {
-                _binding.tvContent.apply {
-                    val params = this.layoutParams
-                    params.width = this.width - 10
-                    params.height = this.height - 10
-                    this.layoutParams = params
-                }
-            }
             _binding.btnBig -> {
                 _binding.tvContent.apply {
-                    val params = this.layoutParams
-                    params.width = this.width + 10
-                    params.height = this.height + 10
-                    this.layoutParams = params
+                    this.text = this.text.toString() + "hello"
+                }
+            }
+            _binding.btnReset -> {
+                _binding.tvContent.apply {
+                    this.text = "hello"
                 }
             }
         }
