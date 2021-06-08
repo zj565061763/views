@@ -20,6 +20,7 @@
         <activity android:name=".LinearLayoutActivity" />
         <activity android:name=".MaxSizeLayoutActivity" />
         <activity android:name=".TextLineLayoutActivity" />
+        <activity android:name=".AutoSizeActivity" />
 
     </application>
 
