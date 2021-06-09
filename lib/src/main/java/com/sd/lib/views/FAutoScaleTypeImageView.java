@@ -42,7 +42,7 @@ public class FAutoScaleTypeImageView extends AppCompatImageView
         if (mWHScaleDelta != delta)
         {
             mWHScaleDelta = delta;
-            changeScaleType(getDrawable());
+            checkScaleType(getDrawable());
         }
     }
 
@@ -81,7 +81,7 @@ public class FAutoScaleTypeImageView extends AppCompatImageView
     @Override
     public void setImageDrawable(@Nullable Drawable drawable)
     {
-        changeScaleType(drawable);
+        checkScaleType(drawable);
         super.setImageDrawable(drawable);
     }
 
@@ -90,10 +90,10 @@ public class FAutoScaleTypeImageView extends AppCompatImageView
     {
         super.onLayout(changed, left, top, right, bottom);
         if (changed)
-            changeScaleType(getDrawable());
+            checkScaleType(getDrawable());
     }
 
-    private boolean changeScaleType(Drawable drawable)
+    private boolean checkScaleType(Drawable drawable)
     {
         if (drawable == null)
             return false;
@@ -111,10 +111,9 @@ public class FAutoScaleTypeImageView extends AppCompatImageView
         if (height <= 0)
             return false;
 
-        final float whScale = (float) width / height;
+        final float viewScale = (float) width / height;
         final float drawableScale = (float) drawableWidth / drawableHeight;
-
-        final float deltaScale = Math.abs(whScale - drawableScale);
+        final float deltaScale = Math.abs(viewScale - drawableScale);
         if (deltaScale < mWHScaleDelta)
         {
             final ScaleType scaleTypeTarget = getScaleTypeHandler().onStretch();
