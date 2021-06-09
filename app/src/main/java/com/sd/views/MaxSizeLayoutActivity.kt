@@ -15,9 +15,9 @@ class MaxSizeLayoutActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(_binding.root)
 
         // 设置最大宽度
-        _binding.maxSizeLayout.setMaxWidth(300)
+        _binding.maxSizeLayout.setMaxWidth(400)
         // 设置最大高度
-        _binding.maxSizeLayout.setMaxHeight(300)
+        _binding.maxSizeLayout.setMaxHeight(400)
     }
 
     override fun onClick(v: View?) {
