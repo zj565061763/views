@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+@Deprecated
 public class FAutoWeightLinearLayout extends LinearLayout
 {
     public FAutoWeightLinearLayout(Context context)

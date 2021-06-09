@@ -5,7 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 
 import androidx.appcompat.widget.AppCompatImageView;
-
+@Deprecated
 public class FAutoWidthImageView extends AppCompatImageView
 {
     public FAutoWidthImageView(Context context)

@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 
 import androidx.appcompat.widget.AppCompatImageView;
 
+@Deprecated
 public class FAutoHeightImageView extends AppCompatImageView
 {
     public FAutoHeightImageView(Context context)
