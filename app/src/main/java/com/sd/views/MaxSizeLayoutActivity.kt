@@ -6,8 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.sd.views.databinding.ActivityMaxSizeLayoutBinding
 
 class MaxSizeLayoutActivity : AppCompatActivity(), View.OnClickListener {
-    val TAG = MaxSizeLayoutActivity::class.java.simpleName
-
     private lateinit var _binding: ActivityMaxSizeLayoutBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
