@@ -8,6 +8,10 @@ import android.util.TypedValue;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.widget.TextViewCompat;
 
+/**
+ * https://github.com/zj565061763/autosize-textview
+ */
+@Deprecated
 public class FAutoSizeTextView extends AppCompatTextView
 {
     public FAutoSizeTextView(Context context)

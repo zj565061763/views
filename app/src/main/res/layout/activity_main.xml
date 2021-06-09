@@ -28,12 +28,4 @@
         android:text="TextLineLayoutActivity"
         android:textAllCaps="false" />
 
-    <Button
-        android:id="@+id/btn_auto_size"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="onClick"
-        android:text="AutoSizeActivity"
-        android:textAllCaps="false" />
-
 </LinearLayout>
