@@ -12,20 +12,16 @@ import androidx.appcompat.widget.AppCompatImageView;
  * <br><br>
  * 差值小于设置的值，按比例拉伸展示（默认{@link ScaleType#CENTER_CROP）；大于等于设置的值，则按比例展示（默认{@link ScaleType#FIT_CENTER））
  */
-public class FAutoScaleTypeImageView extends AppCompatImageView
-{
-    public FAutoScaleTypeImageView(Context context)
-    {
+public class FAutoScaleTypeImageView extends AppCompatImageView {
+    public FAutoScaleTypeImageView(Context context) {
         super(context);
     }
 
-    public FAutoScaleTypeImageView(Context context, AttributeSet attrs)
-    {
+    public FAutoScaleTypeImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public FAutoScaleTypeImageView(Context context, AttributeSet attrs, int defStyleAttr)
-    {
+    public FAutoScaleTypeImageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
@@ -33,14 +29,10 @@ public class FAutoScaleTypeImageView extends AppCompatImageView
     private ScaleTypeHandler mScaleTypeHandler;
 
     /**
-     * 图片的宽高比例和控件的宽高比例的差值
-     *
-     * @param delta
+     * 设置图片的宽高比例和控件的宽高比例的差值
      */
-    public void setWHScaleDelta(float delta)
-    {
-        if (mWHScaleDelta != delta)
-        {
+    public void setWHScaleDelta(float delta) {
+        if (mWHScaleDelta != delta) {
             mWHScaleDelta = delta;
             checkScaleType(getDrawable());
         }
@@ -48,29 +40,24 @@ public class FAutoScaleTypeImageView extends AppCompatImageView
 
     /**
      * 设置{@link ScaleTypeHandler}
-     *
-     * @param handler
      */
-    public void setScaleTypeHandler(ScaleTypeHandler handler)
-    {
-        mScaleTypeHandler = handler;
+    public void setScaleTypeHandler(ScaleTypeHandler handler) {
+        if (mScaleTypeHandler != handler) {
+            mScaleTypeHandler = handler;
+            checkScaleType(getDrawable());
+        }
     }
 
-    private ScaleTypeHandler getScaleTypeHandler()
-    {
-        if (mScaleTypeHandler == null)
-        {
-            mScaleTypeHandler = new ScaleTypeHandler()
-            {
+    private ScaleTypeHandler getScaleTypeHandler() {
+        if (mScaleTypeHandler == null) {
+            mScaleTypeHandler = new ScaleTypeHandler() {
                 @Override
-                public ScaleType onStretch()
-                {
+                public ScaleType onStretch() {
                     return ScaleType.CENTER_CROP;
                 }
 
                 @Override
-                public ScaleType onFit()
-                {
+                public ScaleType onFit() {
                     return ScaleType.FIT_CENTER;
                 }
             };
@@ -79,75 +66,60 @@ public class FAutoScaleTypeImageView extends AppCompatImageView
     }
 
     @Override
-    public void setImageDrawable(@Nullable Drawable drawable)
-    {
+    public void setImageDrawable(@Nullable Drawable drawable) {
         checkScaleType(drawable);
         super.setImageDrawable(drawable);
     }
 
     @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom)
-    {
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-        if (changed)
+        if (changed) {
             checkScaleType(getDrawable());
+        }
     }
 
-    private boolean checkScaleType(Drawable drawable)
-    {
-        if (drawable == null)
-            return false;
+    private boolean checkScaleType(Drawable drawable) {
+        if (drawable == null) return false;
 
         final int drawableWidth = drawable.getIntrinsicWidth();
         final int drawableHeight = drawable.getIntrinsicHeight();
-        if (drawableWidth <= 0 || drawableHeight <= 0)
-            return false;
+        if (drawableWidth <= 0 || drawableHeight <= 0) return false;
 
         final int width = getWidth();
-        if (width <= 0)
-            return false;
+        if (width <= 0) return false;
 
         final int height = getHeight();
-        if (height <= 0)
-            return false;
+        if (height <= 0) return false;
 
         final float viewScale = (float) width / height;
         final float drawableScale = (float) drawableWidth / drawableHeight;
         final float deltaScale = Math.abs(viewScale - drawableScale);
-        if (deltaScale < mWHScaleDelta)
-        {
-            final ScaleType scaleTypeTarget = getScaleTypeHandler().onStretch();
-            if (scaleTypeTarget != null && scaleTypeTarget != getScaleType())
-            {
-                setScaleType(scaleTypeTarget);
-                return true;
-            }
-        } else
-        {
-            final ScaleType scaleTypeTarget = getScaleTypeHandler().onFit();
-            if (scaleTypeTarget != null && scaleTypeTarget != getScaleType())
-            {
-                setScaleType(scaleTypeTarget);
-                return true;
-            }
-        }
 
-        return false;
+        if (deltaScale <= mWHScaleDelta) {
+            final ScaleType scaleType = getScaleTypeHandler().onStretch();
+            return applyScaleType(scaleType);
+        } else {
+            final ScaleType scaleType = getScaleTypeHandler().onFit();
+            return applyScaleType(scaleType);
+        }
     }
 
-    public interface ScaleTypeHandler
-    {
+    private boolean applyScaleType(ScaleType scaleType) {
+        if (getScaleType() == scaleType) return false;
+
+        setScaleType(scaleType);
+        return true;
+    }
+
+    public interface ScaleTypeHandler {
         /**
-         * 宽高比例的差值小于设置的值，此时拉伸展示
-         *
-         * @return
+         * 宽高比例的差值小于等于设置的值，此时拉伸展示
          */
         ScaleType onStretch();
 
         /**
          * 宽高比例的差值大于设置的值，此时按比例展示
-         *
-         * @return
          */
         ScaleType onFit();
     }
