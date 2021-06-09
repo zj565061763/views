@@ -49,7 +49,8 @@ public class FTextLineLayout extends FrameLayout {
 
         final float deltaHeight = deltaLine * (lineHeight + lineSpacing);
         final int targetHeight = (int) (textViewHeight + deltaHeight + 0.5);
-        if (targetHeight > 0) {
+
+        if (getMeasuredHeight() < targetHeight) {
             final int heightSpec = MeasureSpec.makeMeasureSpec(targetHeight, MeasureSpec.EXACTLY);
             super.onMeasure(widthMeasureSpec, heightSpec);
         }
