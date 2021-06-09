@@ -17,7 +17,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v) {
-            _binding.btnLinearLayout -> startActivity(Intent(this, LinearLayoutActivity::class.java))
             _binding.btnMaxSize -> startActivity(Intent(this, MaxSizeLayoutActivity::class.java))
             _binding.btnTextLine -> startActivity(Intent(this, TextLineLayoutActivity::class.java))
         }
