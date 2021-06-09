@@ -10,8 +10,8 @@ import androidx.appcompat.widget.AppCompatImageView;
 
 /**
  * 根据图片宽高比例和控件宽高比例的差值，自动改变{@link ScaleType}
- * <br><br>
- * 差值小于设置的值，按比例拉伸展示（默认{@link ScaleType#CENTER_CROP）；大于等于设置的值，则按比例展示（默认{@link ScaleType#FIT_CENTER））
+ * <li>差值 > 设置的值，默认{@link ScaleType#FIT_CENTER}
+ * <li>差值 <= 设置的值，默认{@link ScaleType#CENTER_CROP}
  */
 public class FAutoScaleTypeImageView extends AppCompatImageView {
     public FAutoScaleTypeImageView(@NonNull Context context) {
@@ -97,17 +97,13 @@ public class FAutoScaleTypeImageView extends AppCompatImageView {
         final float drawableScale = (float) drawableWidth / drawableHeight;
         final float deltaScale = Math.abs(viewScale - drawableScale);
 
-        if (deltaScale <= mWHScaleDelta) {
-            final ScaleType scaleType = getScaleTypeHandler().onStretch();
-            return applyScaleType(scaleType);
-        } else {
-            final ScaleType scaleType = getScaleTypeHandler().onFit();
-            return applyScaleType(scaleType);
-        }
-    }
+        final ScaleType scaleType = deltaScale > mWHScaleDelta ?
+                getScaleTypeHandler().onFit() :
+                getScaleTypeHandler().onStretch();
 
-    private boolean applyScaleType(ScaleType scaleType) {
-        if (getScaleType() == scaleType) return false;
+        if (getScaleType() == scaleType) {
+            return false;
+        }
 
         setScaleType(scaleType);
         return true;
