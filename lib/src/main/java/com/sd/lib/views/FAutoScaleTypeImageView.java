@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
 
@@ -13,15 +14,15 @@ import androidx.appcompat.widget.AppCompatImageView;
  * 差值小于设置的值，按比例拉伸展示（默认{@link ScaleType#CENTER_CROP）；大于等于设置的值，则按比例展示（默认{@link ScaleType#FIT_CENTER））
  */
 public class FAutoScaleTypeImageView extends AppCompatImageView {
-    public FAutoScaleTypeImageView(Context context) {
+    public FAutoScaleTypeImageView(@NonNull Context context) {
         super(context);
     }
 
-    public FAutoScaleTypeImageView(Context context, AttributeSet attrs) {
+    public FAutoScaleTypeImageView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public FAutoScaleTypeImageView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public FAutoScaleTypeImageView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
