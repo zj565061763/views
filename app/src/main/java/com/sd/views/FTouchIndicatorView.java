@@ -101,7 +101,7 @@ public class FTouchIndicatorView extends View {
     }
 
     private int getItemSize() {
-        return (int) mPaint.getTextSize();
+        return (int) mPaint.getTextSize() + 20;
     }
 
     /**

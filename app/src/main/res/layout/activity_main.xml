@@ -20,4 +20,11 @@
         android:text="TextLineLayoutActivity"
         android:textAllCaps="false" />
 
+    <com.sd.views.FTouchIndicatorView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#CCCCCC"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp" />
+
 </LinearLayout>
