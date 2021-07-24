@@ -120,11 +120,13 @@ public class FTouchIndicatorView extends View {
             final int totalSize = endBounds - startBounds;
             itemSize = totalSize / array.length;
 
-            final int intValue = (int) event.getY();
-            if (intValue > startBounds && intValue < endBounds
-                    && itemSize > 0) {
-                final int fixValue = intValue - startBounds;
-                index = fixValue / itemSize;
+            if (event != null) {
+                final int intValue = (int) event.getY();
+                if (intValue > startBounds && intValue < endBounds
+                        && itemSize > 0) {
+                    final int fixValue = intValue - startBounds;
+                    index = fixValue / itemSize;
+                }
             }
         } else {
             final int startBounds = getPaddingLeft();
@@ -132,11 +134,13 @@ public class FTouchIndicatorView extends View {
             final int totalSize = endBounds - startBounds;
             itemSize = totalSize / array.length;
 
-            final int intValue = (int) event.getX();
-            if (intValue > startBounds && intValue < endBounds
-                    && itemSize > 0) {
-                final int fixValue = intValue - startBounds;
-                index = fixValue / itemSize;
+            if (event != null) {
+                final int intValue = (int) event.getX();
+                if (intValue > startBounds && intValue < endBounds
+                        && itemSize > 0) {
+                    final int fixValue = intValue - startBounds;
+                    index = fixValue / itemSize;
+                }
             }
         }
 
@@ -166,32 +170,28 @@ public class FTouchIndicatorView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        final String text = getTouchText(event);
+        if (text == null) {
+            return super.onTouchEvent(event);
+        }
+
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 if (mCallback != null) {
-                    final String text = getTouchText(event);
-                    if (text != null) {
-                        mCallback.onTouchDown(text);
-                        return true;
-                    }
+                    mCallback.onTouchDown(text);
+                    return true;
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (mCallback != null) {
-                    final String text = getTouchText(event);
-                    if (text != null) {
-                        mCallback.onTouchMove(text);
-                        return true;
-                    }
+                    mCallback.onTouchMove(text);
+                    return true;
                 }
                 break;
             case MotionEvent.ACTION_UP:
                 if (mCallback != null) {
-                    final String text = getTouchText(event);
-                    if (text != null) {
-                        mCallback.onTouchUp(text);
-                        return true;
-                    }
+                    mCallback.onTouchUp(text);
+                    return true;
                 }
                 break;
             default:
@@ -202,6 +202,7 @@ public class FTouchIndicatorView extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        calculateIndex(null);
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
