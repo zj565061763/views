@@ -33,15 +33,14 @@ public class FTouchIndicatorView extends View {
     };
 
     private final Paint mPaint = new Paint();
-
     private int mCurrentIndex = -1;
-    private int mItemSize = 0;
 
     private Callback mCallback;
 
     public FTouchIndicatorView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        mPaint.setTextSize(dp2px(13, context));
+        mTextSize = dp2px(13, context);
+        mPaint.setTextSize(mTextSize);
         mPaint.setAntiAlias(true);
     }
 
@@ -57,7 +56,7 @@ public class FTouchIndicatorView extends View {
      */
     public void setTextArray(String[] textArray) {
         mTextArray = textArray;
-        invalidate();
+        requestLayout();
     }
 
     /**
@@ -66,7 +65,7 @@ public class FTouchIndicatorView extends View {
     public void setOrientation(int orientation) {
         if (mOrientation != orientation) {
             mOrientation = orientation;
-            invalidate();
+            requestLayout();
         }
     }
 
@@ -77,7 +76,7 @@ public class FTouchIndicatorView extends View {
         if (mTextSize != textSize) {
             mTextSize = textSize;
             mPaint.setTextSize(textSize);
-            invalidate();
+            requestLayout();
         }
     }
 
@@ -87,7 +86,7 @@ public class FTouchIndicatorView extends View {
     public void setTextColorNormal(int textColorNormal) {
         if (mTextColorNormal != textColorNormal) {
             mTextColorNormal = textColorNormal;
-            invalidate();
+            requestLayout();
         }
     }
 
@@ -97,8 +96,12 @@ public class FTouchIndicatorView extends View {
     public void setTextColorSelected(int textColorSelected) {
         if (mTextColorSelected != textColorSelected) {
             mTextColorSelected = textColorSelected;
-            invalidate();
+            requestLayout();
         }
+    }
+
+    private int getItemSize() {
+        return (int) mPaint.getTextSize();
     }
 
     /**
@@ -111,44 +114,31 @@ public class FTouchIndicatorView extends View {
             return;
         }
 
+        final int itemSize = getItemSize();
         int index = -1;
-        int itemSize = 0;
-
         if (mOrientation == VERTICAL) {
             final int startBounds = getPaddingTop();
             final int endBounds = getMeasuredHeight() - getPaddingBottom();
-            final int totalSize = endBounds - startBounds;
-            itemSize = totalSize / array.length;
-
-            if (event != null) {
-                final int intValue = (int) event.getY();
-                if (intValue > startBounds && intValue < endBounds
-                        && itemSize > 0) {
-                    final int fixValue = intValue - startBounds;
-                    index = fixValue / itemSize;
-                }
+            final int intValue = (int) event.getY();
+            if (intValue > startBounds && intValue < endBounds
+                    && itemSize > 0) {
+                final int fixValue = intValue - startBounds;
+                index = fixValue / itemSize;
             }
         } else {
             final int startBounds = getPaddingLeft();
             final int endBounds = getMeasuredWidth() - getPaddingRight();
-            final int totalSize = endBounds - startBounds;
-            itemSize = totalSize / array.length;
-
-            if (event != null) {
-                final int intValue = (int) event.getX();
-                if (intValue > startBounds && intValue < endBounds
-                        && itemSize > 0) {
-                    final int fixValue = intValue - startBounds;
-                    index = fixValue / itemSize;
-                }
+            final int intValue = (int) event.getX();
+            if (intValue > startBounds && intValue < endBounds
+                    && itemSize > 0) {
+                final int fixValue = intValue - startBounds;
+                index = fixValue / itemSize;
             }
         }
 
         if (index >= array.length) {
             index = array.length - 1;
         }
-
-        mItemSize = itemSize;
         setCurrentIndex(index);
     }
 
@@ -168,33 +158,30 @@ public class FTouchIndicatorView extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         final String text = getTouchText(event);
-        if (text == null) {
-            return super.onTouchEvent(event);
-        }
-
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                invalidate();
                 if (mCallback != null) {
                     mCallback.onTouchDown(text);
-                    return true;
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
+                invalidate();
                 if (mCallback != null) {
                     mCallback.onTouchMove(text);
-                    return true;
                 }
                 break;
             case MotionEvent.ACTION_UP:
+                setCurrentIndex(-1);
+                invalidate();
                 if (mCallback != null) {
                     mCallback.onTouchUp(text);
-                    return true;
                 }
                 break;
             default:
                 break;
         }
-        return super.onTouchEvent(event);
+        return true;
     }
 
     @Override
@@ -203,7 +190,7 @@ public class FTouchIndicatorView extends View {
         if (itemCount > 0) {
             int width = 0;
             int height = 0;
-            final int itemSize = (int) mPaint.getTextSize();
+            final int itemSize = getItemSize();
             if (mOrientation == VERTICAL) {
                 width = itemSize + getPaddingLeft() + getPaddingRight();
                 height = itemSize * itemCount + getPaddingTop() + getPaddingBottom();
@@ -219,7 +206,6 @@ public class FTouchIndicatorView extends View {
             setMeasuredDimension(getDefaultSizeInternal(width, widthMeasureSpec),
                     getDefaultSizeInternal(height, heightMeasureSpec));
         }
-        calculateIndex(null);
     }
 
     @Override
@@ -230,7 +216,7 @@ public class FTouchIndicatorView extends View {
             return;
         }
 
-        final int itemSize = mItemSize;
+        final int itemSize = getItemSize();
         if (itemSize <= 0) {
             return;
         }
@@ -267,8 +253,8 @@ public class FTouchIndicatorView extends View {
             } else {
                 mPaint.setColor(mTextColorNormal);
             }
-            left += itemSize * i;
             canvas.drawText(text, left, getPaddingTop(), mPaint);
+            left += itemSize;
         }
     }
 
