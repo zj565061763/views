@@ -34,8 +34,8 @@ public class FTouchIndicatorView extends View {
 
     private final Paint mPaint = new Paint();
 
-    private int mCurrentIndex = 0;
-    private float mItemSize = 0;
+    private int mCurrentIndex = -1;
+    private int mItemSize = 0;
 
     private Callback mCallback;
 
@@ -203,7 +203,26 @@ public class FTouchIndicatorView extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         calculateIndex(null);
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        final int itemSize = mItemSize;
+        if (itemSize > 0) {
+            final int textSize = mTextArray.length;
+            int width = 0;
+            int height = 0;
+            if (mOrientation == VERTICAL) {
+                width = getPaddingLeft() + getPaddingRight();
+                height = itemSize * textSize + getPaddingTop() + getPaddingBottom();
+            } else {
+                width = itemSize * textSize + getPaddingLeft() + getPaddingRight();
+                height = getPaddingTop() + getPaddingBottom();
+            }
+            setMeasuredDimension(getDefaultSizeInternal(width, widthMeasureSpec),
+                    getDefaultSizeInternal(height, heightMeasureSpec));
+        } else {
+            final int width = getPaddingLeft() + getPaddingRight();
+            final int height = getPaddingTop() + getPaddingBottom();
+            setMeasuredDimension(getDefaultSizeInternal(width, widthMeasureSpec),
+                    getDefaultSizeInternal(height, heightMeasureSpec));
+        }
     }
 
     @Override
@@ -214,42 +233,69 @@ public class FTouchIndicatorView extends View {
             return;
         }
 
-        final int orientation = mOrientation;
+        final int itemSize = mItemSize;
+        if (itemSize <= 0) {
+            return;
+        }
+
+        final int currentIndex = mCurrentIndex;
+        if (currentIndex < 0) {
+            return;
+        }
+
         canvas.save();
-        if (orientation == VERTICAL) {
-            drawVertical(canvas, array);
+        if (mOrientation == VERTICAL) {
+            drawVertical(canvas, array, currentIndex, itemSize);
         } else {
-            drawHorizontal(canvas, array);
+            drawHorizontal(canvas, array, currentIndex, itemSize);
         }
         canvas.restore();
     }
 
-    private void drawVertical(Canvas canvas, String[] array) {
+    private void drawVertical(Canvas canvas, String[] array, int currentIndex, int itemSize) {
         int top = getPaddingTop();
         for (int i = 0; i < array.length; i++) {
             final String text = array[i];
-            if (i == mCurrentIndex) {
+            if (i == currentIndex) {
                 mPaint.setColor(mTextColorSelected);
             } else {
                 mPaint.setColor(mTextColorNormal);
             }
-            top += mItemSize * i;
+            top += itemSize * i;
             canvas.drawText(text, getPaddingLeft(), top, mPaint);
         }
     }
 
-    private void drawHorizontal(Canvas canvas, String[] array) {
+    private void drawHorizontal(Canvas canvas, String[] array, int currentIndex, int itemSize) {
         int left = getPaddingLeft();
         for (int i = 0; i < array.length; i++) {
             final String text = array[i];
-            if (i == mCurrentIndex) {
+            if (i == currentIndex) {
                 mPaint.setColor(mTextColorSelected);
             } else {
                 mPaint.setColor(mTextColorNormal);
             }
-            left += mItemSize * i;
+            left += itemSize * i;
             canvas.drawText(text, left, getPaddingTop(), mPaint);
         }
+    }
+
+    private static int getDefaultSizeInternal(int size, int measureSpec) {
+        int result = size;
+        int specSize = MeasureSpec.getSize(measureSpec);
+        int specMode = MeasureSpec.getMode(measureSpec);
+        switch (specMode) {
+            case MeasureSpec.UNSPECIFIED:
+                result = size;
+                break;
+            case MeasureSpec.AT_MOST:
+                result = Math.min(size, specSize);
+                break;
+            case MeasureSpec.EXACTLY:
+                result = specSize;
+                break;
+        }
+        return result;
     }
 
     private static int dp2px(float dp, Context context) {
