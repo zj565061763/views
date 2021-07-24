@@ -112,39 +112,39 @@ public class FTouchIndicatorView extends View {
         }
 
         int index = -1;
+        int itemSize = 0;
+
         if (mOrientation == VERTICAL) {
             final int startBounds = getPaddingTop();
             final int endBounds = getMeasuredHeight() - getPaddingBottom();
             final int totalSize = endBounds - startBounds;
+            itemSize = totalSize / array.length;
+
             final int intValue = (int) event.getY();
             if (intValue > startBounds && intValue < endBounds
-                    && totalSize > 0) {
-                final int itemSize = totalSize / array.length;
-                if (itemSize > 0) {
-                    final int fixValue = intValue - startBounds;
-                    index = fixValue / itemSize;
-                    mItemSize = itemSize;
-                }
+                    && itemSize > 0) {
+                final int fixValue = intValue - startBounds;
+                index = fixValue / itemSize;
             }
         } else {
             final int startBounds = getPaddingLeft();
             final int endBounds = getMeasuredWidth() - getPaddingRight();
             final int totalSize = endBounds - startBounds;
+            itemSize = totalSize / array.length;
+
             final int intValue = (int) event.getX();
             if (intValue > startBounds && intValue < endBounds
-                    && totalSize > 0) {
-                final int itemSize = totalSize / array.length;
-                if (itemSize > 0) {
-                    final int fixValue = intValue - startBounds;
-                    index = fixValue / itemSize;
-                    mItemSize = itemSize;
-                }
+                    && itemSize > 0) {
+                final int fixValue = intValue - startBounds;
+                index = fixValue / itemSize;
             }
         }
 
         if (index >= array.length) {
             index = array.length - 1;
         }
+
+        mItemSize = itemSize;
         setCurrentIndex(index);
     }
 
