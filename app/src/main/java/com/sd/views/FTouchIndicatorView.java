@@ -154,9 +154,6 @@ public class FTouchIndicatorView extends View {
 
     private void setCurrentIndex(int currentIndex) {
         mCurrentIndex = currentIndex;
-        if (currentIndex < 0) {
-            mItemSize = 0;
-        }
     }
 
     private String getTouchText(MotionEvent event) {
@@ -202,18 +199,17 @@ public class FTouchIndicatorView extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        calculateIndex(null);
-        final int itemSize = mItemSize;
-        if (itemSize > 0) {
-            final int textSize = mTextArray.length;
+        final int itemCount = mTextArray.length;
+        if (itemCount > 0) {
             int width = 0;
             int height = 0;
+            final int itemSize = (int) mPaint.getTextSize();
             if (mOrientation == VERTICAL) {
-                width = getPaddingLeft() + getPaddingRight();
-                height = itemSize * textSize + getPaddingTop() + getPaddingBottom();
+                width = itemSize + getPaddingLeft() + getPaddingRight();
+                height = itemSize * itemCount + getPaddingTop() + getPaddingBottom();
             } else {
-                width = itemSize * textSize + getPaddingLeft() + getPaddingRight();
-                height = getPaddingTop() + getPaddingBottom();
+                width = itemSize * itemCount + getPaddingLeft() + getPaddingRight();
+                height = itemSize + getPaddingTop() + getPaddingBottom();
             }
             setMeasuredDimension(getDefaultSizeInternal(width, widthMeasureSpec),
                     getDefaultSizeInternal(height, heightMeasureSpec));
@@ -223,6 +219,7 @@ public class FTouchIndicatorView extends View {
             setMeasuredDimension(getDefaultSizeInternal(width, widthMeasureSpec),
                     getDefaultSizeInternal(height, heightMeasureSpec));
         }
+        calculateIndex(null);
     }
 
     @Override
@@ -238,16 +235,11 @@ public class FTouchIndicatorView extends View {
             return;
         }
 
-        final int currentIndex = mCurrentIndex;
-        if (currentIndex < 0) {
-            return;
-        }
-
         canvas.save();
         if (mOrientation == VERTICAL) {
-            drawVertical(canvas, array, currentIndex, itemSize);
+            drawVertical(canvas, array, mCurrentIndex, itemSize);
         } else {
-            drawHorizontal(canvas, array, currentIndex, itemSize);
+            drawHorizontal(canvas, array, mCurrentIndex, itemSize);
         }
         canvas.restore();
     }
@@ -261,8 +253,8 @@ public class FTouchIndicatorView extends View {
             } else {
                 mPaint.setColor(mTextColorNormal);
             }
-            top += itemSize * i;
             canvas.drawText(text, getPaddingLeft(), top, mPaint);
+            top += itemSize;
         }
     }
 
