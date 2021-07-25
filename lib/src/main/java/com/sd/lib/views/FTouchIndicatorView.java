@@ -13,6 +13,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class FTouchIndicatorView extends LinearLayout {
+    public static final String[] AZ_ARRAY = new String[]{
+            "A", "B", "C", "D", "E", "F", "G",
+            "H", "I", "J", "K", "L", "M", "N",
+            "O", "P", "Q", "R", "S", "T", "U",
+            "V", "W", "X", "Y", "Z"
+    };
+
     /** 字体大小（sp） */
     private int mTextSize = 13;
     /** 正常字体颜色 */
@@ -22,17 +29,16 @@ public class FTouchIndicatorView extends LinearLayout {
     /** Item之间的间距 */
     private int mItemMargin = 0;
     /** 文字数组 */
-    private String[] mTextArray = new String[]{
-            "A", "B", "C", "D", "E", "F", "G",
-            "H", "I", "J", "K", "L", "M", "N",
-            "O", "P", "Q", "R", "S", "T", "U",
-            "V", "W", "X", "Y", "Z"
-    };
+    private String[] mTextArray = AZ_ARRAY;
 
     /** 当前触摸的位置 */
     private int mCurrentIndex = -1;
 
     private IndexChangeCallback mCallback;
+
+    public FTouchIndicatorView(@NonNull Context context) {
+        this(context, null);
+    }
 
     public FTouchIndicatorView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
