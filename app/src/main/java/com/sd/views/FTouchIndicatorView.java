@@ -44,14 +44,14 @@ public class FTouchIndicatorView extends LinearLayout {
     /**
      * 设置回调对象
      */
-    public void setCallback(Callback callback) {
+    public void setCallback(@Nullable Callback callback) {
         mCallback = callback;
     }
 
     /**
      * 设置文字数组
      */
-    public void setTextArray(String[] textArray) {
+    public void setTextArray(@Nullable String[] textArray) {
         mTextArray = textArray;
         createView();
     }
@@ -169,7 +169,7 @@ public class FTouchIndicatorView extends LinearLayout {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        return true;
+        return mTextArray.length > 0;
     }
 
     @Override
@@ -177,18 +177,18 @@ public class FTouchIndicatorView extends LinearLayout {
         final String text = getTouchText(event);
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                if (mCallback != null) {
+                if (mCallback != null && text != null) {
                     mCallback.onTouchDown(text);
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (mCallback != null) {
+                if (mCallback != null && text != null) {
                     mCallback.onTouchMove(text);
                 }
                 break;
             case MotionEvent.ACTION_UP:
                 setCurrentIndex(-1);
-                if (mCallback != null) {
+                if (mCallback != null && text != null) {
                     mCallback.onTouchUp(text);
                 }
                 break;
@@ -234,6 +234,7 @@ public class FTouchIndicatorView extends LinearLayout {
             final TextView oldTextView = getTextViewAt(oldIndex);
             if (oldTextView != null) {
                 oldTextView.setTextColor(mTextColorNormal);
+                oldTextView.setSelected(false);
             }
 
             mCurrentIndex = currentIndex;
@@ -241,6 +242,7 @@ public class FTouchIndicatorView extends LinearLayout {
             final TextView textView = getTextViewAt(currentIndex);
             if (textView != null) {
                 textView.setTextColor(mTextColorSelected);
+                textView.setSelected(true);
             }
         }
     }
@@ -251,10 +253,10 @@ public class FTouchIndicatorView extends LinearLayout {
     }
 
     public interface Callback {
-        void onTouchDown(String text);
+        void onTouchDown(@NonNull String text);
 
-        void onTouchMove(String text);
+        void onTouchMove(@NonNull String text);
 
-        void onTouchUp(String text);
+        void onTouchUp(@NonNull String text);
     }
 }

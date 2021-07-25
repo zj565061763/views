@@ -19,6 +19,7 @@
 
         <activity android:name=".MaxSizeLayoutActivity" />
         <activity android:name=".TextLineLayoutActivity" />
+        <activity android:name=".TouchIndicatorActivity" />
 
     </application>
 
