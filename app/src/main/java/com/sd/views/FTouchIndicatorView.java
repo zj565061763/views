@@ -1,19 +1,20 @@
 package com.sd.views;
 
 import android.content.Context;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class FTouchIndicatorView extends View {
-    /** 字体大小 */
-    private int mTextSize = 0;
+public class FTouchIndicatorView extends LinearLayout {
+    /** 字体大小（sp） */
+    private int mTextSize = 13;
     /** 正常字体颜色 */
     private int mTextColorNormal = Color.BLACK;
     /** 正常字体颜色 */
@@ -26,16 +27,17 @@ public class FTouchIndicatorView extends View {
             "V", "W", "X", "Y", "Z"
     };
 
-    private final Paint mPaint = new Paint();
     private int mCurrentIndex = -1;
+    private int mItemMargin = 0;
 
     private Callback mCallback;
 
     public FTouchIndicatorView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        mTextSize = dp2px(13, context);
-        mPaint.setTextSize(mTextSize);
-        mPaint.setAntiAlias(true);
+        mItemMargin = dp2px(2, context);
+        setOrientation(LinearLayout.VERTICAL);
+        setGravity(Gravity.CENTER);
+        createView(mTextArray);
     }
 
     /**
@@ -50,17 +52,16 @@ public class FTouchIndicatorView extends View {
      */
     public void setTextArray(String[] textArray) {
         mTextArray = textArray;
-        requestLayout();
+        createView(textArray);
     }
 
     /**
-     * 设置字体大小
+     * 设置字体大小（sp）
      */
     public void setTextSize(int textSize) {
         if (mTextSize != textSize) {
             mTextSize = textSize;
-            mPaint.setTextSize(textSize);
-            requestLayout();
+            updateTextSize();
         }
     }
 
@@ -70,7 +71,7 @@ public class FTouchIndicatorView extends View {
     public void setTextColorNormal(int textColorNormal) {
         if (mTextColorNormal != textColorNormal) {
             mTextColorNormal = textColorNormal;
-            requestLayout();
+            updateTextColorNormal();
         }
     }
 
@@ -80,44 +81,117 @@ public class FTouchIndicatorView extends View {
     public void setTextColorSelected(int textColorSelected) {
         if (mTextColorSelected != textColorSelected) {
             mTextColorSelected = textColorSelected;
-            requestLayout();
+            updateTextColorSelected();
         }
-    }
-
-    private int getItemSize() {
-        return (int) mPaint.getTextSize() + 20;
     }
 
     /**
-     * 计算位置
+     * 设置Item间距
      */
-    private void calculateIndex(MotionEvent event) {
-        final String[] array = mTextArray;
+    public void setItemMargin(int margin) {
+        if (mItemMargin != margin) {
+            mItemMargin = margin;
+            updateItemMargin();
+        }
+    }
+
+    private void createView(String[] array) {
         if (array == null || array.length <= 0) {
-            setCurrentIndex(-1);
             return;
         }
 
-        final int itemSize = getItemSize();
-        int index = -1;
-
-        final int startBounds = getPaddingTop();
-        final int endBounds = getMeasuredHeight() - getPaddingBottom();
-        final int intValue = (int) event.getY();
-        if (intValue > startBounds && intValue < endBounds
-                && itemSize > 0) {
-            final int fixValue = intValue - startBounds;
-            index = fixValue / itemSize;
+        removeAllViews();
+        for (String item : array) {
+            final TextView textView = createTextView();
+            textView.setText(item);
+            addView(textView);
         }
-
-        if (index >= array.length) {
-            index = array.length - 1;
-        }
-        setCurrentIndex(index);
     }
 
-    private void setCurrentIndex(int currentIndex) {
-        mCurrentIndex = currentIndex;
+    private TextView createTextView() {
+        final TextView textView = new TextView(getContext());
+        textView.setGravity(Gravity.CENTER);
+        textView.setPadding(0, mItemMargin, 0, mItemMargin);
+        textView.setTextSize(mTextSize);
+        textView.setTextColor(mTextColorNormal);
+        return textView;
+    }
+
+    private void updateTextSize() {
+        final int count = getChildCount();
+        for (int i = 0; i < count; i++) {
+            final TextView textView = getTextViewAt(i);
+            if (textView != null) {
+                textView.setTextSize(mTextSize);
+            }
+        }
+    }
+
+    private void updateTextColorNormal() {
+        final int count = getChildCount();
+        for (int i = 0; i < count; i++) {
+            if (i != mCurrentIndex) {
+                final TextView textView = getTextViewAt(i);
+                if (textView != null) {
+                    textView.setTextColor(mTextColorNormal);
+                }
+            }
+        }
+    }
+
+    private void updateTextColorSelected() {
+        final TextView textView = getTextViewAt(mCurrentIndex);
+        if (textView != null) {
+            textView.setTextColor(mTextColorSelected);
+        }
+    }
+
+    private void updateItemMargin() {
+        final int count = getChildCount();
+        for (int i = 0; i < count; i++) {
+            if (i != mCurrentIndex) {
+                final TextView textView = getTextViewAt(i);
+                if (textView != null) {
+                    textView.setPadding(0, mItemMargin, 0, mItemMargin);
+                }
+            }
+        }
+    }
+
+    private TextView getTextViewAt(int index) {
+        final View child = getChildAt(index);
+        return (TextView) child;
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        final String text = getTouchText(event);
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                if (mCallback != null) {
+                    mCallback.onTouchDown(text);
+                }
+                break;
+            case MotionEvent.ACTION_MOVE:
+                if (mCallback != null) {
+                    mCallback.onTouchMove(text);
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                setCurrentIndex(-1);
+                if (mCallback != null) {
+                    mCallback.onTouchUp(text);
+                }
+                break;
+            default:
+                break;
+        }
+        return true;
     }
 
     private String getTouchText(MotionEvent event) {
@@ -129,79 +203,42 @@ public class FTouchIndicatorView extends View {
         return null;
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        final String text = getTouchText(event);
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                invalidate();
-                if (mCallback != null) {
-                    mCallback.onTouchDown(text);
-                }
-                break;
-            case MotionEvent.ACTION_MOVE:
-                invalidate();
-                if (mCallback != null) {
-                    mCallback.onTouchMove(text);
-                }
-                break;
-            case MotionEvent.ACTION_UP:
-                setCurrentIndex(-1);
-                invalidate();
-                if (mCallback != null) {
-                    mCallback.onTouchUp(text);
-                }
-                break;
-            default:
-                break;
-        }
-        return true;
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        final int itemCount = mTextArray.length;
-        if (itemCount > 0) {
-            final int itemSize = getItemSize();
-            int width = itemSize + getPaddingLeft() + getPaddingRight();
-            int height = itemSize * itemCount + getPaddingTop() + getPaddingBottom();
-            setMeasuredDimension(width, height);
-        } else {
-            final int width = getPaddingLeft() + getPaddingRight();
-            final int height = getPaddingTop() + getPaddingBottom();
-            setMeasuredDimension(width, height);
-        }
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        final String[] array = mTextArray;
-        if (array == null || array.length <= 0) {
+    /**
+     * 计算位置
+     */
+    private void calculateIndex(MotionEvent event) {
+        final int count = getChildCount();
+        if (count <= 0) {
+            setCurrentIndex(-1);
             return;
         }
 
-        final int itemSize = getItemSize();
-        if (itemSize <= 0) {
-            return;
-        }
-
-        canvas.save();
-        drawItem(canvas, array, mCurrentIndex, itemSize);
-        canvas.restore();
-    }
-
-    private void drawItem(Canvas canvas, String[] array, int currentIndex, int itemSize) {
-        int top = getPaddingTop();
-        for (int i = 0; i < array.length; i++) {
-            final String text = array[i];
-            if (i == currentIndex) {
-                mPaint.setColor(mTextColorSelected);
-            } else {
-                mPaint.setColor(mTextColorNormal);
+        final int intValue = (int) event.getY();
+        int index = -1;
+        for (int i = 0; i < count; i++) {
+            final View child = getChildAt(i);
+            if (intValue > child.getTop() && intValue < child.getBottom()) {
+                index = i;
+                break;
             }
-            canvas.drawText(text, getPaddingLeft(), top, mPaint);
-            top += itemSize;
+        }
+        setCurrentIndex(index);
+    }
+
+    private void setCurrentIndex(int currentIndex) {
+        final int oldIndex = mCurrentIndex;
+        if (oldIndex != currentIndex) {
+            final TextView oldTextView = getTextViewAt(oldIndex);
+            if (oldTextView != null) {
+                oldTextView.setTextColor(mTextColorNormal);
+            }
+
+            mCurrentIndex = currentIndex;
+
+            final TextView textView = getTextViewAt(currentIndex);
+            if (textView != null) {
+                textView.setTextColor(mTextColorSelected);
+            }
         }
     }
 
