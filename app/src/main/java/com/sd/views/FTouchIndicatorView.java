@@ -168,6 +168,11 @@ public class FTouchIndicatorView extends LinearLayout {
     }
 
     @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        return true;
+    }
+
+    @Override
     public boolean onTouchEvent(MotionEvent event) {
         final String text = getTouchText(event);
         switch (event.getAction()) {
