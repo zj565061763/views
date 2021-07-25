@@ -19,7 +19,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         when (v) {
             _binding.btnMaxSize -> startActivity(Intent(this, MaxSizeLayoutActivity::class.java))
             _binding.btnTextLine -> startActivity(Intent(this, TextLineLayoutActivity::class.java))
-            _binding.btnTouchIndicator -> startActivity(Intent(this, TouchIndicatorActivity::class.java))
         }
     }
 }
