@@ -222,6 +222,10 @@ public class FTouchIndicatorView extends LinearLayout {
         int index = -1;
         for (int i = 0; i < count; i++) {
             final View child = getChildAt(i);
+            if (child.getVisibility() != VISIBLE) {
+                continue;
+            }
+
             if (intValue > child.getTop() && intValue <= child.getBottom()) {
                 index = i;
                 break;
