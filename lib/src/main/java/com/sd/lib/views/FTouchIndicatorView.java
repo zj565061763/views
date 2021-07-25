@@ -124,20 +124,24 @@ public class FTouchIndicatorView extends LinearLayout {
 
         final String[] array = mTextArray;
         if (array != null) {
-            for (String item : array) {
-                final TextView textView = createTextView();
-                textView.setText(item);
+            for (int i = 0; i < array.length; i++) {
+                final TextView textView = createTextView(i);
+                textView.setText(array[i]);
                 addView(textView);
             }
         }
     }
 
-    private TextView createTextView() {
+    private TextView createTextView(int index) {
         final TextView textView = new TextView(getContext());
         textView.setGravity(Gravity.CENTER);
         textView.setPadding(0, getItemMargin(), 0, getItemMargin());
         textView.setTextSize(mTextSize);
-        textView.setTextColor(mTextColorNormal);
+        if (index == mCurrentIndex) {
+            textView.setTextColor(mTextColorSelected);
+        } else {
+            textView.setTextColor(mTextColorNormal);
+        }
         return textView;
     }
 
