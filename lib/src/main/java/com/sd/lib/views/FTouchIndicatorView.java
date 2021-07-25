@@ -1,4 +1,4 @@
-package com.sd.views;
+package com.sd.lib.views;
 
 import android.content.Context;
 import android.graphics.Color;
