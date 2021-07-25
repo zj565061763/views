@@ -34,16 +34,16 @@ class TouchIndicatorActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onTouchDown(text: String) {
-                Log.i(TAG, "onTouchDown ${text}")
+            override fun onTouchDown() {
+                Log.i(TAG, "onTouchDown")
             }
 
-            override fun onTouchMove(text: String) {
-                Log.i(TAG, "onTouchMove ${text}")
+            override fun onTouchMove() {
+                Log.i(TAG, "onTouchMove")
             }
 
-            override fun onTouchUp(text: String) {
-                Log.i(TAG, "onTouchUp ${text}")
+            override fun onTouchUp() {
+                Log.i(TAG, "onTouchUp")
             }
         })
     }

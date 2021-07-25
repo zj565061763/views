@@ -29,6 +29,7 @@ public class FTouchIndicatorView extends LinearLayout {
             "V", "W", "X", "Y", "Z"
     };
 
+    /** 当前触摸的位置 */
     private int mCurrentIndex = -1;
 
     private Callback mCallback;
@@ -46,6 +47,25 @@ public class FTouchIndicatorView extends LinearLayout {
      */
     public void setCallback(@Nullable Callback callback) {
         mCallback = callback;
+    }
+
+    /**
+     * 当前触摸的位置
+     */
+    public int getCurrentIndex() {
+        return mCurrentIndex;
+    }
+
+    /**
+     * 当前触摸的文本
+     */
+    @Nullable
+    public String getCurrentText() {
+        final int index = mCurrentIndex;
+        if (index >= 0 && index < mTextArray.length) {
+            return mTextArray[index];
+        }
+        return null;
     }
 
     /**
@@ -174,44 +194,30 @@ public class FTouchIndicatorView extends LinearLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        final String text = getTouchText(event);
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                if (mCallback != null && text != null) {
-                    mCallback.onTouchDown(text);
+                calculateIndex(event);
+                if (mCallback != null) {
+                    mCallback.onTouchDown();
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (mCallback != null && text != null) {
-                    mCallback.onTouchMove(text);
+                calculateIndex(event);
+                if (mCallback != null) {
+                    mCallback.onTouchMove();
                 }
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
                 setCurrentIndex(-1);
-                if (mCallback != null && text != null) {
-                    mCallback.onTouchUp(text);
+                if (mCallback != null) {
+                    mCallback.onTouchUp();
                 }
                 break;
             default:
                 break;
         }
         return true;
-    }
-
-    private String getTouchText(MotionEvent event) {
-        final int index = calculateIndex(event);
-        setCurrentIndex(index);
-        return getCurrentText();
-    }
-
-    @Nullable
-    private String getCurrentText() {
-        final int index = mCurrentIndex;
-        if (index >= 0 && index < mTextArray.length) {
-            return mTextArray[index];
-        }
-        return null;
     }
 
     /**
@@ -227,7 +233,7 @@ public class FTouchIndicatorView extends LinearLayout {
         int index = -1;
         for (int i = 0; i < count; i++) {
             final View child = getChildAt(i);
-            if (intValue > child.getTop() && intValue < child.getBottom()) {
+            if (intValue > child.getTop() && intValue <= child.getBottom()) {
                 index = i;
                 break;
             }
@@ -268,13 +274,13 @@ public class FTouchIndicatorView extends LinearLayout {
 
         public abstract void onIndexChanged(int index, String text);
 
-        public void onTouchDown(@NonNull String text) {
+        public void onTouchDown() {
         }
 
-        public void onTouchMove(@NonNull String text) {
+        public void onTouchMove() {
         }
 
-        public void onTouchUp(@NonNull String text) {
+        public void onTouchUp() {
         }
     }
 }
