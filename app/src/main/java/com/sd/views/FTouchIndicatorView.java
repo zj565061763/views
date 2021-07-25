@@ -196,23 +196,12 @@ public class FTouchIndicatorView extends LinearLayout {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                calculateIndex(event);
-                if (mCallback != null) {
-                    mCallback.onTouchDown();
-                }
-                break;
             case MotionEvent.ACTION_MOVE:
-                calculateIndex(event);
-                if (mCallback != null) {
-                    mCallback.onTouchMove();
-                }
+                setCurrentIndex(calculateIndex(event));
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
                 setCurrentIndex(-1);
-                if (mCallback != null) {
-                    mCallback.onTouchUp();
-                }
                 break;
             default:
                 break;
@@ -271,16 +260,6 @@ public class FTouchIndicatorView extends LinearLayout {
     }
 
     public static abstract class Callback {
-
         public abstract void onIndexChanged(int index, String text);
-
-        public void onTouchDown() {
-        }
-
-        public void onTouchMove() {
-        }
-
-        public void onTouchUp() {
-        }
     }
 }
