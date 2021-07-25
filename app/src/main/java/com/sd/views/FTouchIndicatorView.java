@@ -34,10 +34,10 @@ public class FTouchIndicatorView extends LinearLayout {
 
     public FTouchIndicatorView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        mItemMargin = dp2px(2, context);
         setOrientation(LinearLayout.VERTICAL);
         setGravity(Gravity.CENTER);
-        createView(mTextArray);
+        setItemMargin(dp2px(2, context));
+        setTextArray(mTextArray);
     }
 
     /**
@@ -52,7 +52,7 @@ public class FTouchIndicatorView extends LinearLayout {
      */
     public void setTextArray(String[] textArray) {
         mTextArray = textArray;
-        createView(textArray);
+        createView();
     }
 
     /**
@@ -95,7 +95,8 @@ public class FTouchIndicatorView extends LinearLayout {
         }
     }
 
-    private void createView(String[] array) {
+    private void createView() {
+        final String[] array = mTextArray;
         if (array == null || array.length <= 0) {
             return;
         }
@@ -149,11 +150,9 @@ public class FTouchIndicatorView extends LinearLayout {
     private void updateItemMargin() {
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            if (i != mCurrentIndex) {
-                final TextView textView = getTextViewAt(i);
-                if (textView != null) {
-                    textView.setPadding(0, mItemMargin, 0, mItemMargin);
-                }
+            final TextView textView = getTextViewAt(i);
+            if (textView != null) {
+                textView.setPadding(0, mItemMargin, 0, mItemMargin);
             }
         }
     }
@@ -161,11 +160,6 @@ public class FTouchIndicatorView extends LinearLayout {
     private TextView getTextViewAt(int index) {
         final View child = getChildAt(index);
         return (TextView) child;
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
     @Override
@@ -195,8 +189,8 @@ public class FTouchIndicatorView extends LinearLayout {
     }
 
     private String getTouchText(MotionEvent event) {
-        calculateIndex(event);
-        final int index = mCurrentIndex;
+        final int index = calculateIndex(event);
+        setCurrentIndex(index);
         if (index >= 0 && index < mTextArray.length) {
             return mTextArray[index];
         }
@@ -206,11 +200,10 @@ public class FTouchIndicatorView extends LinearLayout {
     /**
      * 计算位置
      */
-    private void calculateIndex(MotionEvent event) {
+    private int calculateIndex(MotionEvent event) {
         final int count = getChildCount();
         if (count <= 0) {
-            setCurrentIndex(-1);
-            return;
+            return -1;
         }
 
         final int intValue = (int) event.getY();
@@ -222,7 +215,7 @@ public class FTouchIndicatorView extends LinearLayout {
                 break;
             }
         }
-        setCurrentIndex(index);
+        return index;
     }
 
     private void setCurrentIndex(int currentIndex) {
