@@ -198,6 +198,11 @@ public class FTouchIndicatorView extends LinearLayout {
     }
 
     @Override
+    public void setOrientation(int orientation) {
+        super.setOrientation(VERTICAL);
+    }
+
+    @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         return mTextArray.length > 0;
     }
