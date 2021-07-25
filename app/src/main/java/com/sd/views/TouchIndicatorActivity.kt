@@ -16,23 +16,21 @@ class TouchIndicatorActivity : AppCompatActivity() {
         _binding = ActivityTouchIndicatorBinding.inflate(layoutInflater)
         setContentView(_binding.root)
 
-        _binding.viewTouchIndicator.setCallback(object : FTouchIndicatorView.Callback() {
-            override fun onIndexChanged(index: Int, text: String?) {
-                Log.i(TAG, "onIndexChanged ${index} -> ${text}")
-                if (text != null) {
-                    _binding.viewTouchIndicator.setBackgroundColor(Color.parseColor("#EEEEEE"))
-                    _binding.tvText.apply {
-                        this.text = text
-                        this.visibility = View.VISIBLE
-                    }
-                } else {
-                    _binding.viewTouchIndicator.setBackgroundColor(Color.TRANSPARENT)
-                    _binding.tvText.apply {
-                        this.text = ""
-                        this.visibility = View.GONE
-                    }
+        _binding.viewTouchIndicator.setIndexChangeCallback { index, text ->
+            Log.i(TAG, "onIndexChanged ${index} -> ${text}")
+            if (text != null) {
+                _binding.viewTouchIndicator.setBackgroundColor(Color.parseColor("#EEEEEE"))
+                _binding.tvText.apply {
+                    this.text = text
+                    this.visibility = View.VISIBLE
+                }
+            } else {
+                _binding.viewTouchIndicator.setBackgroundColor(Color.TRANSPARENT)
+                _binding.tvText.apply {
+                    this.text = ""
+                    this.visibility = View.GONE
                 }
             }
-        })
+        }
     }
 }

@@ -32,7 +32,7 @@ public class FTouchIndicatorView extends LinearLayout {
     /** 当前触摸的位置 */
     private int mCurrentIndex = -1;
 
-    private Callback mCallback;
+    private IndexChangeCallback mCallback;
 
     public FTouchIndicatorView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -45,7 +45,7 @@ public class FTouchIndicatorView extends LinearLayout {
     /**
      * 设置回调对象
      */
-    public void setCallback(@Nullable Callback callback) {
+    public void setIndexChangeCallback(@Nullable IndexChangeCallback callback) {
         mCallback = callback;
     }
 
@@ -259,7 +259,13 @@ public class FTouchIndicatorView extends LinearLayout {
         return (int) (dp * scale + 0.5f);
     }
 
-    public static abstract class Callback {
-        public abstract void onIndexChanged(int index, String text);
+    public interface IndexChangeCallback {
+        /**
+         * 触摸位置变化回调
+         *
+         * @param index 触摸的位置
+         * @param text  触摸的文本
+         */
+        void onIndexChanged(int index, @Nullable String text);
     }
 }
