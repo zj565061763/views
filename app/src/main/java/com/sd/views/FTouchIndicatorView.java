@@ -187,6 +187,7 @@ public class FTouchIndicatorView extends LinearLayout {
                 }
                 break;
             case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
                 setCurrentIndex(-1);
                 if (mCallback != null && text != null) {
                     mCallback.onTouchUp(text);
@@ -201,6 +202,12 @@ public class FTouchIndicatorView extends LinearLayout {
     private String getTouchText(MotionEvent event) {
         final int index = calculateIndex(event);
         setCurrentIndex(index);
+        return getCurrentText();
+    }
+
+    @Nullable
+    private String getCurrentText() {
+        final int index = mCurrentIndex;
         if (index >= 0 && index < mTextArray.length) {
             return mTextArray[index];
         }
@@ -244,6 +251,11 @@ public class FTouchIndicatorView extends LinearLayout {
                 textView.setTextColor(mTextColorSelected);
                 textView.setSelected(true);
             }
+
+            if (mCallback != null) {
+                final String text = getCurrentText();
+                mCallback.onIndexChanged(currentIndex, text);
+            }
         }
     }
 
@@ -252,11 +264,17 @@ public class FTouchIndicatorView extends LinearLayout {
         return (int) (dp * scale + 0.5f);
     }
 
-    public interface Callback {
-        void onTouchDown(@NonNull String text);
+    public static abstract class Callback {
 
-        void onTouchMove(@NonNull String text);
+        public abstract void onIndexChanged(int index, String text);
 
-        void onTouchUp(@NonNull String text);
+        public void onTouchDown(@NonNull String text) {
+        }
+
+        public void onTouchMove(@NonNull String text) {
+        }
+
+        public void onTouchUp(@NonNull String text) {
+        }
     }
 }
