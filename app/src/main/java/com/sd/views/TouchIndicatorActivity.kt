@@ -24,6 +24,7 @@ class TouchIndicatorActivity : AppCompatActivity() {
             }
 
             override fun onTouchMove(text: String) {
+                _binding.viewTouchIndicator.setBackgroundColor(Color.parseColor("#EEEEEE"))
                 _binding.tvText.apply {
                     this.text = text
                     this.visibility = View.VISIBLE
