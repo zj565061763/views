@@ -39,7 +39,6 @@ public class FTouchIndicatorView extends LinearLayout {
         setOrientation(LinearLayout.VERTICAL);
         setGravity(Gravity.CENTER);
         setItemMargin(dp2px(4, context));
-        setTextArray(mTextArray);
     }
 
     /**
@@ -225,6 +224,9 @@ public class FTouchIndicatorView extends LinearLayout {
             if (child.getVisibility() != VISIBLE) {
                 continue;
             }
+            if (!(child instanceof TextView)) {
+                continue;
+            }
 
             if (intValue > child.getTop() && intValue <= child.getBottom()) {
                 index = i;
@@ -255,6 +257,14 @@ public class FTouchIndicatorView extends LinearLayout {
                 final String text = getCurrentText();
                 mCallback.onIndexChanged(currentIndex, text);
             }
+        }
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (getChildCount() <= 0) {
+            createView();
         }
     }
 
