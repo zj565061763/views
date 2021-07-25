@@ -11,28 +11,16 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatTextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FTouchIndicatorView extends LinearLayout {
-    public static final String[] AZ_ARRAY = new String[]{
-            "A", "B", "C", "D", "E", "F", "G",
-            "H", "I", "J", "K", "L", "M", "N",
-            "O", "P", "Q", "R", "S", "T", "U",
-            "V", "W", "X", "Y", "Z"
-    };
-
-    /** 字体大小（sp） */
-    private int mTextSize = 13;
-    /** 正常字体颜色 */
-    private int mTextColorNormal = Color.BLACK;
-    /** 正常字体颜色 */
-    private int mTextColorSelected = Color.RED;
-    /** Item之间的间距 */
-    private int mItemMargin = 0;
-    /** 文字数组 */
-    private String[] mTextArray = AZ_ARRAY;
-
     /** 当前触摸的位置 */
     private int mCurrentIndex = -1;
+    /** Item之间的间距 */
+    private int mItemMargin = 0;
 
     private IndexChangeCallback mCallback;
 
@@ -62,53 +50,12 @@ public class FTouchIndicatorView extends LinearLayout {
     }
 
     /**
-     * 当前触摸的文本
+     * 当前触摸的View
      */
     @Nullable
-    public String getCurrentText() {
+    public View getCurrentView() {
         final int index = mCurrentIndex;
-        if (index >= 0 && index < mTextArray.length) {
-            return mTextArray[index];
-        }
-        return null;
-    }
-
-    /**
-     * 设置文字数组
-     */
-    public void setTextArray(@Nullable String[] textArray) {
-        mTextArray = textArray;
-        createView();
-    }
-
-    /**
-     * 设置字体大小（sp）
-     */
-    public void setTextSize(int textSize) {
-        if (mTextSize != textSize) {
-            mTextSize = textSize;
-            updateTextSize();
-        }
-    }
-
-    /**
-     * 设置正常字体颜色
-     */
-    public void setTextColorNormal(int textColorNormal) {
-        if (mTextColorNormal != textColorNormal) {
-            mTextColorNormal = textColorNormal;
-            updateTextColorNormal();
-        }
-    }
-
-    /**
-     * 设置选中字体颜色
-     */
-    public void setTextColorSelected(int textColorSelected) {
-        if (mTextColorSelected != textColorSelected) {
-            mTextColorSelected = textColorSelected;
-            updateTextColorSelected();
-        }
+        return getChildAt(index);
     }
 
     /**
@@ -125,76 +72,30 @@ public class FTouchIndicatorView extends LinearLayout {
         return mItemMargin / 2;
     }
 
-    private void createView() {
+    /**
+     * 设置TextView构建对象
+     */
+    public void setTextBuilder(@NonNull TextBuilder builder) {
         removeAllViews();
+        final List<View> list = builder.build(getContext());
 
-        final String[] array = mTextArray;
-        if (array != null) {
-            for (int i = 0; i < array.length; i++) {
-                final TextView textView = createTextView(i);
-                textView.setText(array[i]);
-                addView(textView);
-            }
+        final int margin = getItemMargin();
+        for (View view : list) {
+            view.setPadding(0, margin, 0, margin);
+            addView(view);
         }
     }
 
-    private TextView createTextView(int index) {
-        final TextView textView = new TextView(getContext());
-        textView.setGravity(Gravity.CENTER);
-        textView.setPadding(0, getItemMargin(), 0, getItemMargin());
-        textView.setTextSize(mTextSize);
-        if (index == mCurrentIndex) {
-            textView.setTextColor(mTextColorSelected);
-        } else {
-            textView.setTextColor(mTextColorNormal);
-        }
-        return textView;
-    }
-
-    private void updateTextSize() {
-        final int count = getChildCount();
-        for (int i = 0; i < count; i++) {
-            final TextView textView = getTextViewAt(i);
-            if (textView != null) {
-                textView.setTextSize(mTextSize);
-            }
-        }
-    }
-
-    private void updateTextColorNormal() {
-        final int count = getChildCount();
-        for (int i = 0; i < count; i++) {
-            if (i != mCurrentIndex) {
-                final TextView textView = getTextViewAt(i);
-                if (textView != null) {
-                    textView.setTextColor(mTextColorNormal);
-                }
-            }
-        }
-    }
-
-    private void updateTextColorSelected() {
-        final TextView textView = getTextViewAt(mCurrentIndex);
-        if (textView != null) {
-            textView.setTextColor(mTextColorSelected);
-        }
-    }
-
+    /**
+     * 更新Item间距
+     */
     private void updateItemMargin() {
         final int count = getChildCount();
         final int margin = getItemMargin();
         for (int i = 0; i < count; i++) {
-            final TextView textView = getTextViewAt(i);
-            if (textView != null) {
-                textView.setPadding(0, margin, 0, margin);
-            }
+            final View view = getChildAt(i);
+            view.setPadding(0, margin, 0, margin);
         }
-    }
-
-    @Nullable
-    private TextView getTextViewAt(int index) {
-        final View child = getChildAt(index);
-        return child instanceof TextView ? (TextView) child : null;
     }
 
     @Override
@@ -204,7 +105,7 @@ public class FTouchIndicatorView extends LinearLayout {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        return mTextArray.length > 0;
+        return getChildCount() > 0;
     }
 
     @Override
@@ -236,8 +137,7 @@ public class FTouchIndicatorView extends LinearLayout {
         final int intValue = (int) event.getY();
         int index = -1;
         for (int i = 0; i < count; i++) {
-            final TextView child = getTextViewAt(i);
-            if (child == null) continue;
+            final View child = getChildAt(i);
             if (child.getVisibility() != VISIBLE) continue;
 
             if (intValue > child.getTop() && intValue <= child.getBottom()) {
@@ -251,23 +151,20 @@ public class FTouchIndicatorView extends LinearLayout {
     private void setCurrentIndex(int currentIndex) {
         final int oldIndex = mCurrentIndex;
         if (oldIndex != currentIndex) {
-            final TextView oldTextView = getTextViewAt(oldIndex);
-            if (oldTextView != null) {
-                oldTextView.setTextColor(mTextColorNormal);
-                oldTextView.setSelected(false);
+            final View oldView = getChildAt(oldIndex);
+            if (oldView != null) {
+                oldView.setSelected(false);
             }
 
             mCurrentIndex = currentIndex;
 
-            final TextView textView = getTextViewAt(currentIndex);
-            if (textView != null) {
-                textView.setTextColor(mTextColorSelected);
-                textView.setSelected(true);
+            final View currentView = getChildAt(currentIndex);
+            if (currentView != null) {
+                currentView.setSelected(true);
             }
 
             if (mCallback != null) {
-                final String text = getCurrentText();
-                mCallback.onIndexChanged(currentIndex, text);
+                mCallback.onIndexChanged(currentIndex, getCurrentView());
             }
         }
     }
@@ -276,7 +173,7 @@ public class FTouchIndicatorView extends LinearLayout {
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         if (getChildCount() <= 0) {
-            createView();
+            setTextBuilder(new TextBuilder());
         }
     }
 
@@ -285,13 +182,95 @@ public class FTouchIndicatorView extends LinearLayout {
         return (int) (dp * scale + 0.5f);
     }
 
+    public static class TextBuilder {
+        /** 字体大小（sp） */
+        int mTextSize = 13;
+        /** 正常字体颜色 */
+        int mTextColorNormal = Color.BLACK;
+        /** 正常字体颜色 */
+        int mTextColorSelected = Color.RED;
+        /** 文字数组 */
+        String[] mTextArray = new String[]{
+                "A", "B", "C", "D", "E", "F", "G",
+                "H", "I", "J", "K", "L", "M", "N",
+                "O", "P", "Q", "R", "S", "T", "U",
+                "V", "W", "X", "Y", "Z"
+        };
+
+        /**
+         * 设置字体大小（sp）
+         */
+        public TextBuilder setTextSize(int textSize) {
+            mTextSize = textSize;
+            return this;
+        }
+
+        /**
+         * 设置正常字体颜色
+         */
+        public TextBuilder setTextColorNormal(int textColorNormal) {
+            mTextColorNormal = textColorNormal;
+            return this;
+        }
+
+        /**
+         * 设置选中字体颜色
+         */
+        public TextBuilder setTextColorSelected(int textColorSelected) {
+            mTextColorSelected = textColorSelected;
+            return this;
+        }
+
+        /**
+         * 设置文字数组
+         */
+        public TextBuilder setTextArray(@Nullable String[] textArray) {
+            mTextArray = textArray;
+            return this;
+        }
+
+        @NonNull
+        public List<View> build(Context context) {
+            final String[] array = mTextArray;
+            final int size = array != null ? array.length : 0;
+
+            final List<View> list = new ArrayList<>(size);
+            if (array != null) {
+                for (int i = 0; i < size; i++) {
+                    final TextView textView = createTextView(context);
+                    textView.setText(array[i]);
+                    list.add(textView);
+                }
+            }
+            return list;
+        }
+
+        private TextView createTextView(Context context) {
+            final TextView textView = new AppCompatTextView(context) {
+                @Override
+                public void setSelected(boolean selected) {
+                    super.setSelected(selected);
+                    if (selected) {
+                        this.setTextColor(mTextColorSelected);
+                    } else {
+                        this.setTextColor(mTextColorNormal);
+                    }
+                }
+            };
+            textView.setGravity(Gravity.CENTER);
+            textView.setTextSize(mTextSize);
+            textView.setTextColor(mTextColorNormal);
+            return textView;
+        }
+    }
+
     public interface IndexChangeCallback {
         /**
          * 触摸位置变化回调
          *
          * @param index 触摸的位置
-         * @param text  触摸的文本
+         * @param view  触摸的View
          */
-        void onIndexChanged(int index, @Nullable String text);
+        void onIndexChanged(int index, @Nullable View view);
     }
 }
