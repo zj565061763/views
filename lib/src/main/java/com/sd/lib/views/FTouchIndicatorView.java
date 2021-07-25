@@ -113,7 +113,8 @@ public class FTouchIndicatorView extends LinearLayout {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_MOVE:
-                setCurrentIndex(calculateIndex(event));
+                final int index = calculateIndex(event);
+                setCurrentIndex(index);
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
