@@ -36,7 +36,7 @@ public class FTouchIndicatorView extends LinearLayout {
         super(context, attrs);
         setOrientation(LinearLayout.VERTICAL);
         setGravity(Gravity.CENTER);
-        setItemMargin(dp2px(2, context));
+        setItemMargin(dp2px(4, context));
         setTextArray(mTextArray);
     }
 
@@ -95,6 +95,10 @@ public class FTouchIndicatorView extends LinearLayout {
         }
     }
 
+    private int getItemMargin() {
+        return mItemMargin / 2;
+    }
+
     private void createView() {
         final String[] array = mTextArray;
         if (array == null || array.length <= 0) {
@@ -112,7 +116,7 @@ public class FTouchIndicatorView extends LinearLayout {
     private TextView createTextView() {
         final TextView textView = new TextView(getContext());
         textView.setGravity(Gravity.CENTER);
-        textView.setPadding(0, mItemMargin, 0, mItemMargin);
+        textView.setPadding(0, getItemMargin(), 0, getItemMargin());
         textView.setTextSize(mTextSize);
         textView.setTextColor(mTextColorNormal);
         return textView;
@@ -149,10 +153,11 @@ public class FTouchIndicatorView extends LinearLayout {
 
     private void updateItemMargin() {
         final int count = getChildCount();
+        final int margin = getItemMargin();
         for (int i = 0; i < count; i++) {
             final TextView textView = getTextViewAt(i);
             if (textView != null) {
-                textView.setPadding(0, mItemMargin, 0, mItemMargin);
+                textView.setPadding(0, margin, 0, margin);
             }
         }
     }
