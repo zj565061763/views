@@ -7,17 +7,11 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class FTouchIndicatorView extends View {
-    public static final int HORIZONTAL = LinearLayout.HORIZONTAL;
-    public static final int VERTICAL = LinearLayout.VERTICAL;
-
-    /** 排列方向 */
-    private int mOrientation = VERTICAL;
     /** 字体大小 */
     private int mTextSize = 0;
     /** 正常字体颜色 */
@@ -57,16 +51,6 @@ public class FTouchIndicatorView extends View {
     public void setTextArray(String[] textArray) {
         mTextArray = textArray;
         requestLayout();
-    }
-
-    /**
-     * 设置方向
-     */
-    public void setOrientation(int orientation) {
-        if (mOrientation != orientation) {
-            mOrientation = orientation;
-            requestLayout();
-        }
     }
 
     /**
@@ -116,24 +100,14 @@ public class FTouchIndicatorView extends View {
 
         final int itemSize = getItemSize();
         int index = -1;
-        if (mOrientation == VERTICAL) {
-            final int startBounds = getPaddingTop();
-            final int endBounds = getMeasuredHeight() - getPaddingBottom();
-            final int intValue = (int) event.getY();
-            if (intValue > startBounds && intValue < endBounds
-                    && itemSize > 0) {
-                final int fixValue = intValue - startBounds;
-                index = fixValue / itemSize;
-            }
-        } else {
-            final int startBounds = getPaddingLeft();
-            final int endBounds = getMeasuredWidth() - getPaddingRight();
-            final int intValue = (int) event.getX();
-            if (intValue > startBounds && intValue < endBounds
-                    && itemSize > 0) {
-                final int fixValue = intValue - startBounds;
-                index = fixValue / itemSize;
-            }
+
+        final int startBounds = getPaddingTop();
+        final int endBounds = getMeasuredHeight() - getPaddingBottom();
+        final int intValue = (int) event.getY();
+        if (intValue > startBounds && intValue < endBounds
+                && itemSize > 0) {
+            final int fixValue = intValue - startBounds;
+            index = fixValue / itemSize;
         }
 
         if (index >= array.length) {
@@ -188,23 +162,14 @@ public class FTouchIndicatorView extends View {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         final int itemCount = mTextArray.length;
         if (itemCount > 0) {
-            int width = 0;
-            int height = 0;
             final int itemSize = getItemSize();
-            if (mOrientation == VERTICAL) {
-                width = itemSize + getPaddingLeft() + getPaddingRight();
-                height = itemSize * itemCount + getPaddingTop() + getPaddingBottom();
-            } else {
-                width = itemSize * itemCount + getPaddingLeft() + getPaddingRight();
-                height = itemSize + getPaddingTop() + getPaddingBottom();
-            }
-            setMeasuredDimension(getDefaultSizeInternal(width, widthMeasureSpec),
-                    getDefaultSizeInternal(height, heightMeasureSpec));
+            int width = itemSize + getPaddingLeft() + getPaddingRight();
+            int height = itemSize * itemCount + getPaddingTop() + getPaddingBottom();
+            setMeasuredDimension(width, height);
         } else {
             final int width = getPaddingLeft() + getPaddingRight();
             final int height = getPaddingTop() + getPaddingBottom();
-            setMeasuredDimension(getDefaultSizeInternal(width, widthMeasureSpec),
-                    getDefaultSizeInternal(height, heightMeasureSpec));
+            setMeasuredDimension(width, height);
         }
     }
 
@@ -222,15 +187,11 @@ public class FTouchIndicatorView extends View {
         }
 
         canvas.save();
-        if (mOrientation == VERTICAL) {
-            drawVertical(canvas, array, mCurrentIndex, itemSize);
-        } else {
-            drawHorizontal(canvas, array, mCurrentIndex, itemSize);
-        }
+        drawItem(canvas, array, mCurrentIndex, itemSize);
         canvas.restore();
     }
 
-    private void drawVertical(Canvas canvas, String[] array, int currentIndex, int itemSize) {
+    private void drawItem(Canvas canvas, String[] array, int currentIndex, int itemSize) {
         int top = getPaddingTop();
         for (int i = 0; i < array.length; i++) {
             final String text = array[i];
@@ -242,38 +203,6 @@ public class FTouchIndicatorView extends View {
             canvas.drawText(text, getPaddingLeft(), top, mPaint);
             top += itemSize;
         }
-    }
-
-    private void drawHorizontal(Canvas canvas, String[] array, int currentIndex, int itemSize) {
-        int left = getPaddingLeft();
-        for (int i = 0; i < array.length; i++) {
-            final String text = array[i];
-            if (i == currentIndex) {
-                mPaint.setColor(mTextColorSelected);
-            } else {
-                mPaint.setColor(mTextColorNormal);
-            }
-            canvas.drawText(text, left, getPaddingTop(), mPaint);
-            left += itemSize;
-        }
-    }
-
-    private static int getDefaultSizeInternal(int size, int measureSpec) {
-        int result = size;
-        int specSize = MeasureSpec.getSize(measureSpec);
-        int specMode = MeasureSpec.getMode(measureSpec);
-        switch (specMode) {
-            case MeasureSpec.UNSPECIFIED:
-                result = size;
-                break;
-            case MeasureSpec.AT_MOST:
-                result = Math.min(size, specSize);
-                break;
-            case MeasureSpec.EXACTLY:
-                result = specSize;
-                break;
-        }
-        return result;
     }
 
     private static int dp2px(float dp, Context context) {
