@@ -181,9 +181,10 @@ public class FTouchIndicatorView extends LinearLayout {
         }
     }
 
+    @Nullable
     private TextView getTextViewAt(int index) {
         final View child = getChildAt(index);
-        return (TextView) child;
+        return child instanceof TextView ? (TextView) child : null;
     }
 
     @Override
@@ -220,13 +221,9 @@ public class FTouchIndicatorView extends LinearLayout {
         final int intValue = (int) event.getY();
         int index = -1;
         for (int i = 0; i < count; i++) {
-            final View child = getChildAt(i);
-            if (child.getVisibility() != VISIBLE) {
-                continue;
-            }
-            if (!(child instanceof TextView)) {
-                continue;
-            }
+            final TextView child = getTextViewAt(i);
+            if (child == null) continue;
+            if (child.getVisibility() != VISIBLE) continue;
 
             if (intValue > child.getTop() && intValue <= child.getBottom()) {
                 index = i;
